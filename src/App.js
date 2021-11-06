@@ -1,24 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
-
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <p class='section-title'>Minesweeper</p>
+      <div class='board-area'>
+      <div class='board-left' />
+      <div class='board-main'>
+        <div class='board'>
+          <div class='board-square' id='square1'>
+            <div class='square-contents'></div>
+          </div>
+          <div class='board-square' id='square2'>
+            <div class='square-contents'></div>
+          </div>
+          <div class='board-square' id='square3'>
+            <div class='square-contents'></div>
+          </div>
+          <div class='board-square' id='square4'>
+            <div class='square-contents'></div>
+          </div>
+          <div class='board-square' id='square5'>
+            <div class='square-contents'> </div>
+          </div>
+          <div class='board-square' id='square6'>
+            <div class='square-contents'></div>
+          </div>
+          <div class='board-square' id='square7'>
+            <div class='square-contents'></div>
+          </div>
+          <div class='board-square' id='square8'>
+            <div class='square-contents'></div>
+          </div>
+          <div class='board-square' id='square9'>
+            <div class='square-contents'></div>
+          </div>
+        </div>
+      </div>
+      <div class='board-right'>
+        <p id='win'></p>
+      </div>
     </div>
+    <div class='instruction-area'>
+      <div id='left-child'></div>
+      <p id='next-message'>
+        Start over: <p id='current-turn'></p>
+      </p>
+      <div class='btn'>
+        <button id='clear'>Clear</button>
+      </div>
+    </div>
+    <p class='under-text' id='click-or-tap'>
+      Click or tap on the above board to play a move!
+    </p>
+    <script src='index.js'></script>
+  </div>
   );
 }
 
