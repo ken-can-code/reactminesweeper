@@ -1,3 +1,5 @@
+import Square from './Square';
+
 function App() {
   return (
     <div>
@@ -30,9 +32,7 @@ function App() {
           <div class='board-square' id='square8'>
             <div class='square-contents'></div>
           </div>
-          <div class='board-square' id='square9'>
-            <div class='square-contents'></div>
-          </div>
+          <Square />
         </div>
       </div>
       <div class='board-right'>
@@ -51,7 +51,7 @@ function App() {
     <p class='under-text' id='click-or-tap'>
       Click or tap on the above board to play a move!
     </p>
-    <script src='index.js'></script>
+    <script src='index.jsx'></script>
   </div>
   );
 }
