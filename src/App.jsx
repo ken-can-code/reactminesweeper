@@ -1,6 +1,12 @@
 import Square from './Square';
 
 function App() {
+  const squares = [];
+  for (let i = 0; i < 100; i += 1) {
+    squares.push(<Square id={`square${i}`} />);
+
+  }
+
   return (
     <div>
       <p class='section-title'>Minesweeper</p>
@@ -8,31 +14,7 @@ function App() {
       <div class='board-left' />
       <div class='board-main'>
         <div class='board'>
-          <div class='board-square' id='square1'>
-            <div class='square-contents'></div>
-          </div>
-          <div class='board-square' id='square2'>
-            <div class='square-contents'></div>
-          </div>
-          <div class='board-square' id='square3'>
-            <div class='square-contents'></div>
-          </div>
-          <div class='board-square' id='square4'>
-            <div class='square-contents'></div>
-          </div>
-          <div class='board-square' id='square5'>
-            <div class='square-contents'> </div>
-          </div>
-          <div class='board-square' id='square6'>
-            <div class='square-contents'></div>
-          </div>
-          <div class='board-square' id='square7'>
-            <div class='square-contents'></div>
-          </div>
-          <div class='board-square' id='square8'>
-            <div class='square-contents'></div>
-          </div>
-          <Square />
+          {squares} {/* if array is placed in JSX return statement it'll simply display in DOM */}
         </div>
       </div>
       <div class='board-right'>
