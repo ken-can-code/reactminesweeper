@@ -1,24 +1,37 @@
 import Square from './Square';
 
 function App() {
-  function handleClick(event) {
+  function handleClick(event, mineState) {
     console.log('event.target', event.target);
-    event.target.className = 'revealed-square';
+    console.log('mineState', mineState);
+    if (mineState === false) {
+      console.log('in mineState false');
+      event.target.className = 'revealed-square';
+    } else {
+      console.log('in mineState true');
+      event.target.className = 'mine-square';
+    }
   }
 
-  const squares = [];
-  let totalMines = 30;
+  const squares = []; // tracks which squares should have mines
+  let totalMines = 30; // total number of mines to be on the grid
   while (totalMines > 0) {
     const randomSquareNum = Math.floor(Math.random() * 100);
     if (squares[randomSquareNum] === undefined) {
       squares[randomSquareNum] = true;
+      // console.log(`Mined square`, squares[randomSquareNum]); // counts number of mines
       totalMines -= 1;
     }
   }
 
   for (let i = 0; i < 100; i += 1) {
-    squares[i] = <Square id={`square${i}`} key={`key${i}`} handleClick={handleClick} isMine={squares[i] === true ? true : false} />;
+    squares[i] = <Square
+    id={`square${i}`}
+    key={`key${i}`}
+    handleClick={handleClick}
+    isMine={squares[i] === true} />;
   }
+  
 
   // console.log('square at position 0 raw boolean value', squares[0].props.isMine);
 

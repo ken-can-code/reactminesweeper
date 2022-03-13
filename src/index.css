@@ -26,6 +26,14 @@
   padding: 10px;
 }
 
+.mine-square {
+  display: grid;
+  justify-content: center;
+  background-color: rgba(255, 131, 127, 0.909);
+  border-radius: 10px;
+  padding: 10px;
+}
+
 .board-square {
   display: grid;
   justify-content: center;

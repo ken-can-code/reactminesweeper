@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 
 const Square = (props) => {
-  const {isMine: mineState, handleClick} = props;
-// state at any given time || update function 
-  const [isMine, setIsMine] = useState(mineState);
-//                         || React function to create the hook || initial state
+  const {isMine, handleClick} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed', 'flagged']
 
   return (
-    <div className='board-square' onClick={handleClick}>
+    <div
+      className='board-square'
+      onClick={function (event) {
+        handleClick(event, isMine)
+        }}
+      >
       <div className='square-contents'></div>
     </div>
   )
 }
+
+// const kenSquare = document.getElementById('kenSquare');
+// kenSquare.addEventListener('click', handleClick);
 
 export default Square;
 
@@ -49,3 +54,10 @@ export default Square;
 // e.g. let numOfMines = 30;
 // loop through squares in random order and assign mine to square if not already have mine
 // continue loop until no more mines
+
+
+
+// ******************* Luigi's Notes ***********************
+//     state at any given time || update function 
+// const [isMine, setIsMine] = useState(mineState);
+//                         || React function to create the hook || initial state
