@@ -2,16 +2,29 @@ import Square from './Square';
 
 function App() {
   function handleClick(event, mineState) {
-    console.log('event.target', event.target);
-    console.log('mineState', mineState);
-    if (mineState === false) {
-      console.log('in mineState false');
-      event.target.className = 'revealed-square';
-    } else {
-      console.log('in mineState true');
-      event.target.className = 'mine-square';
-    }
-  }
+    const squareContents = event.target.firstChild;
+    // console.log('event', event);
+    // console.log('mineState', mineState);
+    if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
+      if (mineState === false) {
+        console.log('in mineState false');
+        event.target.className = 'revealed-square';
+      } else {
+        console.log('in mineState true');
+        event.target.className = 'mine-square';
+      }
+    } else { // sorta right click logic (any other click logic)
+      event.preventDefault(); // prevents context menu from appearing for right click
+      console.log('right click');
+      if (event.target.className === 'board-square' && squareContents.innerHTML === '') {
+        squareContents.innerHTML = '📍';
+        console.log(`SQUARECONTENTS.TEXTCONTENT 1`, squareContents.innerHTML);
+      } else if (event.target.className === 'board-square') {
+        squareContents.innerHTML = '';
+        console.log(`SQUARECONTENTS.TEXTCONTENT 2`, squareContents.innerHTML);
+      }
+    } // closes the else
+  } // closes the handleClick function
 
   const squares = []; // tracks which squares should have mines
   let totalMines = 30; // total number of mines to be on the grid
@@ -37,7 +50,7 @@ function App() {
 
   return (
     <div>
-      <p className='section-title'>A grid</p>
+      <p className='section-title'>Mine Sweeper</p>
       <div className='board-area'>
       <div className='board-left' />
       <div className='board-main'>

@@ -10,7 +10,8 @@ const Square = (props) => {
       onClick={function (event) {
         handleClick(event, isMine)
         }}
-      >
+      onContextMenu={handleClick}
+    >
       <div className='square-contents'></div>
     </div>
   )
@@ -58,6 +59,7 @@ export default Square;
 
 
 // ******************* Luigi's Notes ***********************
-//     state at any given time || update function 
+//     state at any given time || function used to update the state ** <-- corrected wording by Ken 
 // const [isMine, setIsMine] = useState(mineState);
 //                         || React function to create the hook || initial state
+
