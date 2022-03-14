@@ -1,11 +1,10 @@
 import Square from './Square';
 
 function App() {
-  function handleClick(event, mineState) {
-    const squareContents = event.target.firstChild;
-    // console.log('event', event);
+  function handleLeftClick(event, mineState) {
+    console.log('left click');
     // console.log('mineState', mineState);
-    if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
+    if (event.target.firstChild.textContent === '') {
       if (mineState === false) {
         console.log('in mineState false');
         event.target.className = 'revealed-square';
@@ -13,18 +12,49 @@ function App() {
         console.log('in mineState true');
         event.target.className = 'mine-square';
       }
-    } else { // sorta right click logic (any other click logic)
-      event.preventDefault(); // prevents context menu from appearing for right click
-      console.log('right click');
-      if (event.target.className === 'board-square' && squareContents.innerHTML === '') {
-        squareContents.innerHTML = '📍';
-        console.log(`SQUARECONTENTS.TEXTCONTENT 1`, squareContents.innerHTML);
-      } else if (event.target.className === 'board-square') {
-        squareContents.innerHTML = '';
-        console.log(`SQUARECONTENTS.TEXTCONTENT 2`, squareContents.innerHTML);
+    }
+  } // closes the handleLeftClick function
+
+  function handleRightClick(event) {
+    event.preventDefault(); // prevents context menu from appearing for right click
+    event.stopPropagation();
+    console.log('right click');
+    if (event.target.className === 'board-square') { // click on the outer div
+      if (event.target.firstChild.textContent === '') {
+        event.target.firstChild.textContent = '📍';
+        console.log('if textContent is blank');
+      } else {
+        event.target.firstChild.textContent = '';
+        console.log('if textContent is not blank using else assumption');
       }
-    } // closes the else
-  } // closes the handleClick function
+      console.log(`nested if statement triggered`, event.target.className);
+    }
+    if (event.target.className === 'square-contents') { // click on the contents i.e. the flag
+      console.log('event.target within squareContents - flag clicked', event.target);
+      if (event.target.textContent === '📍') {
+        event.target.textContent = '';
+      } // remove this close bracked if you uncomment code block below
+
+      /* *** below code is unnecessary and is left as comments for illustration ***
+        below code is unnecessary because it is not possible to click on an empty div
+        basically, when the div contains nothing (empty string) it has no size
+  
+        ---> The child div will also send the event to the parent div <---
+        basically what happens is the flag is removed and then immediately added back
+        because it will literally process right click TWICE without event.stopPropagation()
+
+      } else if (event.target.textContent === '📍') {
+        // console.log('if textContent is blank and clicked on the flag itself - BEFORE');
+        // console.log(event.target.textContent);
+        console.log('event.target.textContent BEFORE change', event.target.textContent);
+        event.target.textContent = ''; // removes flag
+        console.log('event.target.textContent AFTER change', event.target.textContent);
+        // console.log('if textContent is blank and clicked on the flag itself - AFTER');
+        // console.log('if textContent is not blank and clicked on the flag itself');
+      }
+      */
+    }
+  }
 
   const squares = []; // tracks which squares should have mines
   let totalMines = 30; // total number of mines to be on the grid
@@ -41,7 +71,8 @@ function App() {
     squares[i] = <Square
     id={`square${i}`}
     key={`key${i}`}
-    handleClick={handleClick}
+    handleLeftClick={handleLeftClick}
+    handleRightClick={handleRightClick}
     isMine={squares[i] === true} />;
   }
   

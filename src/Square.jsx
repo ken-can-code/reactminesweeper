@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 
 const Square = (props) => {
-  const {isMine, handleClick} = props;
+  const {isMine, handleLeftClick, handleRightClick} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed', 'flagged']
 
   return (
     <div
       className='board-square'
       onClick={function (event) {
-        handleClick(event, isMine)
+        handleLeftClick(event, isMine)
         }}
-      onContextMenu={handleClick}
+      onContextMenu={handleRightClick}
     >
-      <div className='square-contents'></div>
+      <div
+      className='square-contents'
+      onContextMenu={handleRightClick}
+      ></div>
     </div>
   )
 }
