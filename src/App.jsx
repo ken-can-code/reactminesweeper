@@ -13,15 +13,22 @@ function App() {
         console.log('in mineState true');
         event.target.className = 'mine-square';
       }
-    } else { // sorta right click logic (any other click logic)
+    } else if (event.type === 'contextmenu') { // right click logic
       event.preventDefault(); // prevents context menu from appearing for right click
+      let visualFlag;
+      event.target.className === 'board-square'
+      ? visualFlag = event.target.firstChild : visualFlag = event.target;
       console.log('right click');
-      if (event.target.className === 'board-square' && squareContents.innerHTML === '') {
-        squareContents.innerHTML = '📍';
-        console.log(`SQUARECONTENTS.TEXTCONTENT 1`, squareContents.innerHTML);
-      } else if (event.target.className === 'board-square') {
-        squareContents.innerHTML = '';
-        console.log(`SQUARECONTENTS.TEXTCONTENT 2`, squareContents.innerHTML);
+      if ((event.target.className === 'board-square'
+      || event.target.className === 'square-contents')
+      && visualFlag.innerHTML === '') {
+        visualFlag.innerHTML = '📍';
+        console.log(`VISUALFLAG.INNERHTML 1`, visualFlag.innerHTML);
+      } else if (event.target.className === 'board-square'
+      || event.target.className === 'square-contents') {
+        event.stopPropagation(); // prevents click from bubbling up and clicking more than once
+        visualFlag.innerHTML = '';
+        console.log(`VISUALFLAG.INNERHTML 2`, visualFlag.innerHTML);
       }
     } // closes the else
   } // closes the handleClick function

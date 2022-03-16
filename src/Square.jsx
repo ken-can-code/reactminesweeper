@@ -7,12 +7,13 @@ const Square = (props) => {
   return (
     <div
       className='board-square'
-      onClick={function (event) {
+      onClick={function (event) { // handle left click
         handleClick(event, isMine)
         }}
-      onContextMenu={handleClick}
+      onContextMenu={handleClick} // right click listener (don't forget preventDefault()!)
     >
-      <div className='square-contents'></div>
+      <div className='square-contents'
+      onContextMenu={handleClick}></div>
     </div>
   )
 }
