@@ -2,18 +2,27 @@ import React, { useState } from 'react';
 
 const Square = (props) => {
   const {isMine, handleClick} = props;
-  const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed', 'flagged']
+  const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', 'flagged']
 
   return (
     <div
-      className='board-square'
+      className={squareState === 'revealed-empty'
+      ? 'revealed-empty' // true 'revealed-empty'
+      : squareState === 'revealed-mine'
+        ? 'revealed-mine' // true 'revealed-mine'
+        : 'unrevealed' // unrevealed or flagged becomes 'unrevealed'
+      }
       onClick={function (event) { // handle left click
-        handleClick(event, isMine)
+        handleClick(event, isMine, setSquareState)
         }}
-      onContextMenu={handleClick} // right click listener (don't forget preventDefault()!)
+      onContextMenu={function (event) { // handle left click
+        handleClick(event, isMine, setSquareState)
+        }} // right click listener (don't forget preventDefault()!)
     >
       <div className='square-contents'
-      onContextMenu={handleClick}></div>
+      onContextMenu={function (event) { // handle left click
+        handleClick(event, isMine, setSquareState)
+        }}>{squareState === 'flagged' ? '📍' : ''}</div> {/* flag gets placed here if needed */}
     </div>
   )
 }
