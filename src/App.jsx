@@ -1,36 +1,35 @@
 import Square from './Square';
 
 function App() {
-  function handleLeftClick(event, mineState) {
+  function handleLeftClick(event, mineState, setSquareState) {
     console.log('left click');
     // console.log('mineState', mineState);
     if (event.target.firstChild.textContent === '') {
       if (mineState === false) {
         console.log('in mineState false');
-        event.target.className = 'revealed-empty';
+        setSquareState('revealed-empty');
       } else {
         console.log('in mineState true');
-        event.target.className = 'revealed-mine';
+        setSquareState('revealed-mine');
       }
     }
   } // closes the handleLeftClick function
 
-  function handleRightClick(event) {
+  function handleRightClick(event, setSquareState) {
     event.preventDefault(); // prevents context menu from appearing for right click
-    event.stopPropagation();
+    event.stopPropagation(); // prevents double right clicks due to bubbling up from square-contents
     console.log('right click');
     if (event.target.className === 'unrevealed') { // click on the outer div
       if (event.target.firstChild.textContent === '') {
-        event.target.firstChild.textContent = '📍';
-        console.log('if textContent is blank');
+        setSquareState('flagged');
+        console.log('if no flag, change state to flagged in outer div');
       } else {
-        event.target.firstChild.textContent = '';
-        console.log('if textContent is not blank using else assumption');
+        setSquareState('unrevealed');
+        console.log('if flag is present, change state to unrevealed in outer div');
       }
-      console.log(`nested if statement triggered`, event.target.className);
     }
     if (event.target.className === 'square-contents') { // click on the contents i.e. the flag
-      console.log('event.target within squareContents - flag clicked', event.target);
+      console.log('flag itself is clicked i.e. square-contents (inner div) - change state to unrevealed');
       if (event.target.textContent === '📍') {
         event.target.textContent = '';
       } // remove this close bracked if you uncomment code block below

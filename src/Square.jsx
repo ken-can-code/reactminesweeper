@@ -6,7 +6,12 @@ const Square = (props) => {
 
   return (
     <div
-      className='unrevealed'
+      className={squareState === 'revealed-empty'
+      ? 'revealed-empty'
+      : squareState === 'revealed-mine'
+      ? 'revealed-mine'
+      : 'unrevealed'
+      }
       onClick={(event) => {
         handleLeftClick(event, isMine, setSquareState)
         }}
