@@ -19,41 +19,22 @@ function App() {
     event.preventDefault(); // prevents context menu from appearing for right click
     event.stopPropagation(); // prevents double right clicks due to bubbling up from square-contents
     console.log('right click');
-    if (event.target.className === 'unrevealed') { // click on the outer div
-      if (event.target.firstChild.textContent === '') {
-        setSquareState('flagged');
-        console.log('if no flag, change state to flagged in outer div');
-      } else {
-        setSquareState('unrevealed');
-        console.log('if flag is present, change state to unrevealed in outer div');
-      }
+    let squareContentsPointer;
+    if (event.target.className === 'unrevealed') {
+      squareContentsPointer = event.target.firstChild;
+    } else if (event.target.className === 'square-contents') { // cannot just use else or flag will insert when green or red square clicked
+      squareContentsPointer = event.target;
     }
-    if (event.target.className === 'square-contents') { // click on the contents i.e. the flag
-      console.log('flag itself is clicked i.e. square-contents (inner div) - change state to unrevealed');
-      if (event.target.textContent === '📍') {
-        event.target.textContent = '';
-      } // remove this close bracked if you uncomment code block below
-
-      /* *** below code is unnecessary and is left as comments for illustration ***
-        below code is unnecessary because it is not possible to click on an empty div
-        basically, when the div contains nothing (empty string) it has no size
-  
-        ---> The child div will also send the event to the parent div <---
-        basically what happens is the flag is removed and then immediately added back
-        because it will literally process right click TWICE without event.stopPropagation()
-
-      } else if (event.target.textContent === '📍') {
-        // console.log('if textContent is blank and clicked on the flag itself - BEFORE');
-        // console.log(event.target.textContent);
-        console.log('event.target.textContent BEFORE change', event.target.textContent);
-        event.target.textContent = ''; // removes flag
-        console.log('event.target.textContent AFTER change', event.target.textContent);
-        // console.log('if textContent is blank and clicked on the flag itself - AFTER');
-        // console.log('if textContent is not blank and clicked on the flag itself');
-      }
-      */
+    if (squareContentsPointer.textContent === '') { // no flag on unrevealed square
+      setSquareState('flagged');
+      console.log('if no flag, change state to flagged in inner or outer div');
+    } else if (squareContentsPointer.textContent === '📍') { // if we want to add '?' state for square later on this is more maintainable
+      setSquareState('unrevealed');
+      console.log('if flag is present, change state to unrevealed in inner or outer div');
     }
-  }
+    // *** it is not possible to click on an empty div because it has no size ***
+
+  } // closes the handleRightClick function
 
   const squares = []; // tracks which squares should have mines
   let totalMines = 30; // total number of mines to be on the grid
