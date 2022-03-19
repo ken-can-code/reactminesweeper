@@ -18,7 +18,7 @@
   font-weight: bold;
 }
 
-.revealed-square {
+.revealed-empty {
   display: grid;
   justify-content: center;
   background-color: rgba(127, 255, 212, 0.909);
@@ -26,7 +26,7 @@
   padding: 10px;
 }
 
-.mine-square {
+.revealed-mine {
   display: grid;
   justify-content: center;
   background-color: rgba(255, 131, 127, 0.909);
@@ -34,14 +34,14 @@
   padding: 10px;
 }
 
-.board-square {
+.unrevealed {
   display: grid;
   justify-content: center;
   background-color: #c1c1d7;
   border-radius: 10px;
   padding: 10px;
 }
-.board-square:nth-child(odd) {
+.unrevealed:nth-child(odd) {
   background-color: rgb(200, 200, 255);
 }
 .square-contents {

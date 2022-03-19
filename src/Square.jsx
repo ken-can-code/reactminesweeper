@@ -2,20 +2,24 @@ import React, { useState } from 'react';
 
 const Square = (props) => {
   const {isMine, handleLeftClick, handleRightClick} = props;
-  const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed', 'flagged']
+  const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine'flagged']
 
   return (
     <div
-      className='board-square'
-      onClick={function (event) {
-        handleLeftClick(event, isMine)
+      className='unrevealed'
+      onClick={(event) => {
+        handleLeftClick(event, isMine, setSquareState)
         }}
-      onContextMenu={handleRightClick}
+      onContextMenu={(event) => {
+        handleRightClick(event, setSquareState)
+        }}
     >
       <div
       className='square-contents'
-      onContextMenu={handleRightClick}
-      ></div>
+      onContextMenu={(event) => {
+        handleRightClick(event, setSquareState)
+        }}
+      >{squareState === 'flagged' ? '📍' : ''}</div>
     </div>
   )
 }

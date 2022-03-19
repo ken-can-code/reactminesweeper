@@ -7,10 +7,10 @@ function App() {
     if (event.target.firstChild.textContent === '') {
       if (mineState === false) {
         console.log('in mineState false');
-        event.target.className = 'revealed-square';
+        event.target.className = 'revealed-empty';
       } else {
         console.log('in mineState true');
-        event.target.className = 'mine-square';
+        event.target.className = 'revealed-mine';
       }
     }
   } // closes the handleLeftClick function
@@ -19,7 +19,7 @@ function App() {
     event.preventDefault(); // prevents context menu from appearing for right click
     event.stopPropagation();
     console.log('right click');
-    if (event.target.className === 'board-square') { // click on the outer div
+    if (event.target.className === 'unrevealed') { // click on the outer div
       if (event.target.firstChild.textContent === '') {
         event.target.firstChild.textContent = '📍';
         console.log('if textContent is blank');
@@ -76,7 +76,6 @@ function App() {
     isMine={squares[i] === true} />;
   }
   
-
   // console.log('square at position 0 raw boolean value', squares[0].props.isMine);
 
   return (
