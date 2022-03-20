@@ -1,6 +1,8 @@
+import React, { useState } from 'react';
 import Square from './Square';
 
 function App() {
+  const [gameOver, setGameOver] = useState(false);
   function handleLeftClick(event, mineState, setSquareState) {
     console.log('left click');
     // console.log('mineState', mineState);
@@ -8,6 +10,7 @@ function App() {
       if (mineState === false) {
         console.log('in mineState false');
         setSquareState('revealed-empty');
+        setGameOver(true);
       } else {
         console.log('in mineState true');
         setSquareState('revealed-mine');
