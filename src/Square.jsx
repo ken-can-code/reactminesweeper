@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Square = (props) => {
-  const {isMine, handleClick} = props;
+  const {isMine, handleClick, isGameOver} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', 'flagged']
 
   return (
@@ -12,16 +12,20 @@ const Square = (props) => {
         ? 'revealed-mine' // true 'revealed-mine'
         : 'unrevealed' // unrevealed or flagged becomes 'unrevealed'
       }
-      onClick={function (event) { // handle left click
+      onClick={isGameOver === false ? function (event) { // handle left click
         handleClick(event, isMine, setSquareState)
-        }}
-      onContextMenu={function (event) { // handle left click
+        } : undefined}
+      onContextMenu={isGameOver === false ? function (event) { // handle right click
         handleClick(event, isMine, setSquareState)
+        } : function (event) {
+          event.preventDefault();
         }} // right click listener (don't forget preventDefault()!)
     >
       <div className='square-contents'
-      onContextMenu={function (event) { // handle left click
+      onContextMenu={isGameOver === false ? function (event) { // handle right click
         handleClick(event, isMine, setSquareState)
+        } : function (event) {
+          event.preventDefault();
         }}>{squareState === 'flagged' ? '📍' : ''}</div> {/* flag gets placed here if needed */}
     </div>
   )
