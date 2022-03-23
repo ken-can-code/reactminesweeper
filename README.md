@@ -1,4 +1,4 @@
-# Tic Tac Toe in React
+# Minesweeper in React
 
 ### Deployment
 
