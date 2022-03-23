@@ -8,6 +8,9 @@
   display: flex;
   flex: 1;
   justify-content: center;
+  border-radius: 2px;
+  border-color: darkslategray;
+  border-style: solid;
   margin-bottom: 20px;
 }
 .board-right {
