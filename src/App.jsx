@@ -3,6 +3,8 @@ import Square from './Square';
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
+  const [clearBoard, setClearBoard] = useState(false);
+  // const [squares, setSquares] = useState([]); // work in progress
   function handleLeftClick(event, mineState, squareState, setSquareState) {
     console.log('left click');
     // console.log('mineState', mineState);
@@ -31,20 +33,28 @@ function App() {
 
   } // closes the handleRightClick function
 
-  function handleClear() {
+  function handleClear() { // work in progress
+    setClearBoard(true);
     setGameOver(false);
+    setClearBoard(false);
   }
 
-  const squares = []; // tracks which squares should have mines
-  let totalMines = 30; // total number of mines to be on the grid
-  while (totalMines > 0) {
-    const randomSquareNum = Math.floor(Math.random() * 100);
-    if (squares[randomSquareNum] === undefined) {
-      squares[randomSquareNum] = true;
-      // console.log(`Mined square`, squares[randomSquareNum]); // counts number of mines
-      totalMines -= 1;
+  let squares; // hope to use state instead soon
+
+  function generateMines(numberOfMines) { // work in progress
+    squares = []; // tracks which squares should have mines
+    let totalMines = numberOfMines; // total number of mines to be on the grid
+    while (totalMines > 0) {
+      const randomSquareNum = Math.floor(Math.random() * 100);
+      if (squares[randomSquareNum] === undefined) {
+        squares[randomSquareNum] = true;
+        // console.log(`Mined square`, squares[randomSquareNum]); // counts number of mines
+        totalMines -= 1;
+      }
     }
   }
+
+  generateMines(30); // temporarily just invoked here, may need update
 
   for (let i = 0; i < 100; i += 1) {
     squares[i] =
@@ -53,7 +63,7 @@ function App() {
     key={`key${i}`}
     handleLeftClick={handleLeftClick}
     handleRightClick={handleRightClick}
-    isMine={squares[i] === true}
+    isMine={squares[i] === true} // explicitly evaluate if true so it returns false if not, instead of undefined
     gameOver={gameOver}
     />;
   }

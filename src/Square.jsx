@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Square = (props) => {
-  const {isMine, handleLeftClick, handleRightClick, gameOver} = props;
+  const {isMine, handleLeftClick, handleRightClick, clearBoard, gameOver} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine'flagged']
 
   return (
