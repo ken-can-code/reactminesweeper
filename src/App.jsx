@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Square from './Square';
 
 function App() {
@@ -51,29 +51,35 @@ function App() {
     setRestart(true); 
   }
 
+  // const [squares, setSquares] = useState([]); // temporary
   const squares = []; // tracks which squares should have mines
-  let totalMines = 30; // total number of mines to be on the grid
-  while (totalMines > 0) {
-    const randomSquareNum = Math.floor(Math.random() * 100);
-    if (squares[randomSquareNum] === undefined) {
-      squares[randomSquareNum] = true;
-      // console.log(`Mined square`, squares[randomSquareNum]); // counts number of mines
-      totalMines -= 1;
+
+  function squareAndMinePlacement() {
+    let totalMines = 30; // total number of mines to be on the grid
+    while (totalMines > 0) {
+      const randomSquareNum = Math.floor(Math.random() * 100);
+      if (squares[randomSquareNum] === undefined) {
+        squares[randomSquareNum] = true;
+        // console.log(`Mined square`, squares[randomSquareNum]); // counts number of mines
+        totalMines -= 1;
+      }
+    }
+
+    for (let i = 0; i < 100; i += 1) {
+      squares[i] = <Square
+      id={`square${i}`}
+      key={`key${i}`}
+      handleClick={handleClick}
+      isGameOver={isGameOver}
+      isMine={squares[i] === true}
+      restart={restart}
+      setRestart={setRestart}
+      />;
     }
   }
-
-  for (let i = 0; i < 100; i += 1) {
-    squares[i] = <Square
-    id={`square${i}`}
-    key={`key${i}`}
-    handleClick={handleClick}
-    isGameOver={isGameOver}
-    isMine={squares[i] === true}
-    restart={restart}
-    setRestart={setRestart}
-    />;
-  }
   
+  squareAndMinePlacement();
+
   return (
     <div>
       <p className='section-title'>Mine Sweeper</p>
