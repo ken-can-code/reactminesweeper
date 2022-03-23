@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Square = (props) => {
-  const {isMine, handleClick, isGameOver} = props;
+  const {isMine, handleClick, isGameOver, restart, setRestart} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', 'flagged']
+
+  useEffect(() => {
+    setSquareState('unrevealed');
+    setRestart(false);
+  }, [restart, setRestart])
 
   return (
     <div

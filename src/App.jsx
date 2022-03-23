@@ -3,6 +3,8 @@ import Square from './Square';
 
 function App() {
   const [isGameOver, setIsGameOver] = useState(false);
+  const [restart, setRestart] = useState(false);
+
   function handleClick(event, mineState, setSquareState) {
     const squareContents = event.target.firstChild;
     // console.log('event', event);
@@ -44,6 +46,11 @@ function App() {
     } // closes the else
   } // closes the handleClick function
 
+  function handleRestart() {
+    setIsGameOver(false);
+    setRestart(true); 
+  }
+
   const squares = []; // tracks which squares should have mines
   let totalMines = 30; // total number of mines to be on the grid
   while (totalMines > 0) {
@@ -61,7 +68,10 @@ function App() {
     key={`key${i}`}
     handleClick={handleClick}
     isGameOver={isGameOver}
-    isMine={squares[i] === true} />;
+    isMine={squares[i] === true}
+    restart={restart}
+    setRestart={setRestart}
+    />;
   }
   
   return (
@@ -89,7 +99,7 @@ function App() {
         Start over: <p id='current-turn'></p>
       </div>
       <div className='btn'>
-        <button id='clear' onClick={() => setIsGameOver(false)}>Clear</button> {/* onClick may not be ideal*/}
+        <button id='clear' onClick={handleRestart}>Restart Game</button> {/* onClick may not be ideal*/}
       </div>
     </div>
     <p className='under-text' id='click-or-tap'>
