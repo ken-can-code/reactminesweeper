@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Square = (props) => {
-  const {isMine, handleLeftClick, handleRightClick, clearBoard, gameOver} = props;
+  const {isMine, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine'flagged']
+
+  useEffect(() => {
+    if (clearBoard) {
+      setSquareState('unrevealed');
+      setClearBoard(false);
+    }
+  }, [clearBoard, setClearBoard]);
 
   return (
     <div
