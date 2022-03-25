@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Square from './Square';
 
 function App() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [restart, setRestart] = useState(false);
+  const [ranOnce, setRanOnce] = useState(false);
+
+  console.log('ranOnceAtTop', ranOnce);
 
   function handleClick(event, mineState, setSquareState) {
     const squareContents = event.target.firstChild;
     // console.log('event', event);
     // console.log('mineState', mineState);
-    if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
+    if (event.type === 'click' && squareContents.textContent === '') { // left click logic
       if (mineState === false) {
         console.log('in mineState false');
         // event.target.className = 'revealed-empty'; // no longer needed -> handled by state
@@ -33,28 +36,29 @@ function App() {
       console.log('right click');
       if ((event.target.className === 'unrevealed' // flag display logic based on right click
       || event.target.className === 'square-contents')
-      && visualFlag.innerHTML === '') {
-        // visualFlag.innerHTML = '📍'; // no longer needed -> handled by state
+      && visualFlag.textContent === '') {
+        // visualFlag.textContent = '📍'; // no longer needed -> handled by state
         setSquareState('flagged'); // in theory adds a flag based on 'flagged' state
-        console.log(`VISUALFLAG.INNERHTML 1`, visualFlag.innerHTML);
+        console.log(`VISUALFLAG.textContent 1`, visualFlag.textContent);
       } else if (event.target.className === 'unrevealed'
       || event.target.className === 'square-contents') {
-        // visualFlag.innerHTML = ''; no longer needed -> handled by state
+        // visualFlag.textContent = ''; no longer needed -> handled by state
         setSquareState('unrevealed'); // in theory removes flag based on no longer being in 'flagged' state
-        console.log(`VISUALFLAG.INNERHTML 2`, visualFlag.innerHTML);
+        console.log(`VISUALFLAG.textContent 2`, visualFlag.textContent);
       }
     } // closes the else
   } // closes the handleClick function
 
   function handleRestart() {
     setIsGameOver(false);
-    setRestart(true); 
+    setRestart(true);
+    setRanOnce(false);
   }
 
   // const [squares, setSquares] = useState([]); // temporary
-  const squares = []; // tracks which squares should have mines
-
-  function squareAndMinePlacement() {
+  const squareAndMinePlacement = useCallback(() => 
+  {
+    const squares = []; // tracks which squares should have mines
     let totalMines = 30; // total number of mines to be on the grid
     while (totalMines > 0) {
       const randomSquareNum = Math.floor(Math.random() * 100);
@@ -64,7 +68,7 @@ function App() {
         totalMines -= 1;
       }
     }
-
+  
     for (let i = 0; i < 100; i += 1) {
       squares[i] = <Square
       id={`square${i}`}
@@ -76,9 +80,21 @@ function App() {
       setRestart={setRestart}
       />;
     }
-  }
   
-  squareAndMinePlacement();
+    return squares;
+
+  }, [isGameOver, restart, setRanOnce]);
+
+  console.log('ranOnceBefore', ranOnce);
+  const squares = squareAndMinePlacement();
+  useEffect(() => {
+    if (ranOnce === false) {
+      setRanOnce(true);
+      console.log('ranOnceInsideUseEffect', ranOnce);
+    }
+  }, [ranOnce, squareAndMinePlacement]);
+
+  console.log('ranOnceAfter', ranOnce);
 
   return (
     <div>
