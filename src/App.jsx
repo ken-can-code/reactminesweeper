@@ -2,15 +2,34 @@ import React, { useState } from 'react';
 import Square from './Square';
 
 function App() {
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
   const [restart, setRestart] = useState(false);
 
-  function handleClick(event, mineState, setSquareState) {
+  function adjMineNum(xCoor, yCoor) {
+    let adjMines = 0;
+    console.log('before loop mine num should be 0', adjMines);
+    for (let x = xCoor - 1; x <= xCoor + 1; x += 1) {
+      for (let y = yCoor + 1; y >= yCoor - 1; y -= 1) {
+        if (squares[y * 10 + x].props.isMine === true) {
+          adjMines += 1;
+        }
+      }
+    }
+    console.log('in mine counter funtion', adjMineNum);
+    return adjMines;
+  }
+
+  function handleClick(event, mineState, setSquareState, xAxis, yAxis) {
     const squareContents = event.target.firstChild;
     // console.log('event', event);
     // console.log('mineState', mineState);
     if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
-      if (mineState === false) {
+      if (mineState === false) { // non mine square logic
+        // const xcoordinate = event.target.
+        console.log('x and y axis, in order', xAxis, yAxis);
+        const luigi = adjMineNum(xAxis, yAxis);
+        // console.log('luigi', luigi);
+        event.target.textContent = luigi;
         console.log('in mineState false');
         // event.target.className = 'revealed-empty'; // no longer needed -> handled by state
         setSquareState('revealed-empty'); // in theory, square becomes minty-green based on state
@@ -18,7 +37,7 @@ function App() {
         console.log('in mineState true');
         // event.target.className = 'revealed-mine'; // no longer needed -> handled by state
         setSquareState('revealed-mine'); // in theory, square becomes red based on state
-        setIsGameOver(true); // SHOULD (but doesn't) update gameOver state to true i.e. the game is now over
+        setGameOver(true);
         // const allSquares = document.querySelectorAll('.square-contents'); // temporarily commented out
         // allSquares.forEach((elem) => { // end game death logic // commented this out to avoid problems
         //   elem.parentNode.setAttribute('disabled', true);
@@ -47,7 +66,7 @@ function App() {
   } // closes the handleClick function
 
   function handleRestart() {
-    setIsGameOver(false);
+    setGameOver(false);
     setRestart(true); 
   }
 
@@ -64,15 +83,18 @@ function App() {
 
   for (let i = 0; i < 100; i += 1) {
     squares[i] = <Square
-    id={`square${i}`}
+    xAxis={i % 10}
+    yAxis={Math.floor(i / 10)}
     key={`key${i}`}
     handleClick={handleClick}
-    isGameOver={isGameOver}
+    gameOver={gameOver}
     isMine={squares[i] === true}
     restart={restart}
     setRestart={setRestart}
     />;
   }
+
+  console.log('squares once populated', squares);
   
   return (
     <div>
@@ -89,7 +111,7 @@ function App() {
       </div>
       <div className='board-right'>
         <p id='endGameMessage'>{
-          isGameOver === true ? 'Game Over!' : ''
+          gameOver === true ? 'Game Over!' : ''
         }</p>
       </div>
     </div>
@@ -114,3 +136,26 @@ export default App;
 
 // just got game over working and very quickly got clear button to clear game over state (still need to reset squares)
 // ideally create handleClear function instead of inline function in clear button onClick listener
+
+// return the ones digit from any number 0 through 99
+
+// get the sum of nested array
+/*
+function sumOfNestedArrays(testData) {
+  let sum = 0;
+
+  for(let i = 0; i < testData.length; i += 1) {
+    for(let k = 0; k < testData[i].length; k += 1) {
+      sum += testData[i][k];
+    }
+  }
+
+  return sum;
+}
+
+const testData = [
+                  [1, 4, 5,],
+                  [2, 8, 3,],
+                  [4, 6, 0,],
+                  ];
+*/
