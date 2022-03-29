@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import Square from './Square';
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
   const [restart, setRestart] = useState(false);
-  const [ranOnce, setRanOnce] = useState(false);
-
-  console.log('ranOnceAtTop', ranOnce);
 
   function adjMineNum(xCoor, yCoor) {
     let adjMines = 0;
@@ -30,9 +27,7 @@ function App() {
       if (mineState === false) { // non mine square logic
         // const xcoordinate = event.target.
         console.log('x and y axis, in order', xAxis, yAxis);
-        const luigi = adjMineNum(xAxis, yAxis);
-        // console.log('luigi', luigi);
-        event.target.textContent = luigi;
+        event.target.textContent = adjMineNum(xAxis, yAxis);
         console.log('in mineState false');
         // event.target.className = 'revealed-empty'; // no longer needed -> handled by state
         setSquareState('revealed-empty'); // in theory, square becomes minty-green based on state
