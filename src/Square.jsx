@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 const Square = (props) => {
-  const {isMine, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
+  const {xAxis, yAxis, isMine, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine'flagged']
+  const [adjacentMinesNum, setAdjacentMinesNum] = useState('');
 
   useEffect(() => {
     if (clearBoard) {
@@ -19,13 +20,13 @@ const Square = (props) => {
       ? 'revealed-mine'
       : 'unrevealed'
       }
-      onClick={gameOver === false
-        ? (event) => {
-          handleLeftClick(event, isMine, squareState, setSquareState)
+      onClick={gameOver === false // all left clicks
+        ? () => {
+          handleLeftClick(isMine, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis)
         }
         : undefined
         }
-      onContextMenu={gameOver === false
+      onContextMenu={gameOver === false // right click on outer square div
         ? (event) => {
           handleRightClick(event, squareState, setSquareState)
         }
@@ -33,14 +34,20 @@ const Square = (props) => {
         }
     >
       <div
-      className='square-contents'
+      className='square-contents' // right click on inner square div (flag itself)
       onContextMenu={gameOver === false
         ? (event) => {
           handleRightClick(event, squareState, setSquareState)
         }
         : (event) => event.preventDefault()
         }
-      >{squareState === 'flagged' ? '📍' : ''}</div>
+      >{
+          squareState === 'flagged'
+          ? '📍'
+          : squareState === 'revealed-empty'
+          ? adjacentMinesNum
+          : ''
+        }</div>
     </div>
   )
 }
