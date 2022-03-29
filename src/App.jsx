@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Square from './Square';
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
   const [clearBoard, setClearBoard] = useState(false);
+  const [squares, setSquares] = useState([]);
   function handleLeftClick(event, mineState, squareState, setSquareState) {
     console.log('left click');
     // console.log('mineState', mineState);
@@ -37,31 +38,34 @@ function App() {
     setGameOver(false);
   }
 
-  const squares = [];
-  let totalMines = 30; // total number of mines to be on the grid
-  while (totalMines > 0) {
-    const randomSquareNum = Math.floor(Math.random() * 100);
-    if (squares[randomSquareNum] === undefined) {
-      squares[randomSquareNum] = true;
-      // console.log(`Mined square`, mineArr[randomSquareNum]); // counts number of mines
-      totalMines -= 1;
-    }
-  }
-
-  for (let i = 0; i < 100; i += 1) {
-    squares[i] =
-    <Square
-    id={`square${i}`}
-    key={`key${i}`}
-    handleLeftClick={handleLeftClick}
-    handleRightClick={handleRightClick}
-    clearBoard={clearBoard}
-    setClearBoard={setClearBoard}
-    isMine={squares[i] === true} // explicitly evaluate if true so it returns false if not, instead of undefined
-    gameOver={gameOver}
-    />;
-  }
   
+  useEffect(() => {
+    const squaresArr = [];
+    let totalMines = 30; // total number of mines to be on the grid
+    while (totalMines > 0) {
+      const randomSquareNum = Math.floor(Math.random() * 100);
+      if (squaresArr[randomSquareNum] === undefined) {
+        squaresArr[randomSquareNum] = true;
+        // console.log(`Mined square`, mineArr[randomSquareNum]); // counts number of mines
+        totalMines -= 1;
+      }
+    }
+    
+    for (let i = 0; i < 100; i += 1) {
+      squaresArr[i] =
+      <Square
+      id={`square${i}`}
+      key={`key${i}`}
+      handleLeftClick={handleLeftClick}
+      handleRightClick={handleRightClick}
+      clearBoard={clearBoard}
+      setClearBoard={setClearBoard}
+      isMine={squaresArr[i] === true} // explicitly evaluate if true so it returns false if not, instead of undefined
+      gameOver={gameOver}
+      />;
+    }
+    setSquares(squaresArr);
+  }, [clearBoard, gameOver]);
   // console.log('square at position 0 raw boolean value', squares[0].props.isMine);
 
   return (
@@ -71,9 +75,9 @@ function App() {
       <div className='board-left' />
       <div className='board-main'>
         <div className='board' onContextMenu={(event) => {
-            event.preventDefault();
+          event.preventDefault();
+            }
           }
-        }
         >
           {squares} {/* if array is placed in JSX return statement it'll simply display in DOM */}
         </div>

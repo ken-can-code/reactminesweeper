@@ -45,8 +45,6 @@ const Square = (props) => {
   )
 }
 
-// const kenSquare = document.getElementById('kenSquare');
-// kenSquare.addEventListener('click', handleClick);
 
 export default Square;
 
@@ -70,24 +68,23 @@ export default Square;
   All susequent left-click clicks:
       --> Mine?
         --> Dead
-        --> Reveal all mines on grid (STRETCH??)
       --> Reveal the square
 */
 
+/*
+
+  
+
+*/
 
 
 // ******************* below has been complete ***********************
 // assign a fixed number of mines to grid completely randomly
-
-// keep track of total number of mines to assign
-// e.g. let numOfMines = 30;
-// loop through squares in random order and assign mine to square if not already have mine
-// continue loop until no more mines
-
-
-
-// ******************* Luigi's Notes ***********************
-//     state at any given time || function used to update the state ** <-- corrected wording by Ken 
-// const [isMine, setIsMine] = useState(mineState);
-//                         || React function to create the hook || initial state
-
+// right click toggles flag on and off
+// if square is left clicked -> 'revealed' right click is disabled on that square
+// if square is right clicked -> 'flagged' left click is disabled on that square
+// clicks are disabled in the space between squares
+// left click will 'reveal' square as green if no mine is present
+// left click will 'reveal' square as red if mine is present
+// if mine is present on a left clicked square, game over is displayed
+// all clicks are disabled if the game is over until game is restarted
