@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Square from './Square';
 
 function App() {
@@ -7,21 +7,22 @@ function App() {
 
   function handleLeftClick(mineState, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis) {
     console.log('left click');
-    // console.log('mineState', mineState);
     if (squareState === 'unrevealed') {
       if (mineState === false) { // if not a mine
         console.log('in mineState false');
-        console.log('x and y axis in order', xAxis, yAxis);
         let adjacentMineCount = 0;
         for (let column = xAxis - 1; column <= xAxis + 1; column += 1) {
           for (let row = yAxis - 1; row <= yAxis + 1; row += 1) {
-            console.log('math number', row * 10 + column); // inexplicably, this console.log is REQUIRED
-            if (squares[row * 10 + column].props.isMine === true) {
+            console.log('math number', row * 10 + column);
+            if (row >= 0 // makes sure not to check a square out of bounds
+              && row <= 9
+              && column >= 0
+              && column <= 9
+              && squares[row * 10 + column].props.isMine === true) {
               adjacentMineCount += 1;
             }
           }
         }
-        console.log('adjacentMineCount', adjacentMineCount);
         setAdjacentMinesNum(adjacentMineCount);
         setSquareState('revealed-empty');
       } else { // if it is a mine
@@ -56,7 +57,6 @@ function App() {
     const randomSquareNum = Math.floor(Math.random() * 100);
     if (squares[randomSquareNum] === undefined) {
       squares[randomSquareNum] = true;
-      // console.log(`Mined square`, mineArr[randomSquareNum]); // counts number of mines
       totalMines -= 1;
     }
   }
