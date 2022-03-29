@@ -79,8 +79,24 @@ export default Square;
 */
 
 /*
+  Stretch features:
 
-  
+  --> show remaining number of mines to player based on number of squares flagged
+  --> when game over, highlight square that caused the game over with big (red?) X
+  --> when game over, show locations of all remaining mines
+  --> when game over, show locations where squares were flagged incorrectly
+  --> guarantee first move is safe
+  --> guarantee first move lands on a space with no adjacent mines, if at all possible
+
+  --> if revealed square is 0, reveal any adjacent squares until no longer 0's all around
+  --> timer
+  --> best score tracking in browser cache
+  --> best score keeping in database
+  --> high score list
+    --> ability to enter name or initials
+  --> sound effects
+  --> miniature mine graphics
+  --> user defined dynamic board size and number of mines
 
 */
 
@@ -95,3 +111,5 @@ export default Square;
 // left click will 'reveal' square as red if mine is present
 // if mine is present on a left clicked square, game over is displayed
 // all clicks are disabled if the game is over until game is restarted
+// a revealed square without a mine will calculate adjacent mines and display number
+// clear button restarts the game and clears all squares of flags and colors, rearranges mines
