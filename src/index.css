@@ -86,10 +86,14 @@
 #explodedMine {
   color: red;
 }
-
+@keyframes strikeThrough {
+  from { text-decoration-color: transparent; }
+  to { text-decoration-color: auto; }
+}
 #strikeThrough {
   color: red;
   text-decoration: line-through;
+  animation: strikeThrough 4s linear;
 }
 #current-turn {
   text-align: center;
