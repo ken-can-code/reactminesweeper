@@ -6,18 +6,12 @@ const Square = (props) => {
   const [adjacentMinesNum, setAdjacentMinesNum] = useState('');
   const [isMine, setIsMine] = useState(false);
   const [explodedMine, setExplodedMine] = useState(false);
-  const [incorrectlyFlagged, setIncorrectlyFlagged] = useState(false);
 
   useEffect(() => { // useful for changing multiple squares at once. Trigger on gameOver or clearBoard
     if (clearBoard) {
       setSquareState('unrevealed');
       setClearBoard(false);
       setExplodedMine(false);
-      setIncorrectlyFlagged(false);
-    }
-    if (squareState === 'flagged' && mineStatus === false) {
-      console.log('mineStatus and isMine state in order inside incorrectly flagged', mineStatus, isMine)
-      setIncorrectlyFlagged(true);
     }
     setIsMine(mineStatus);
     console.log('in useEffect at end', isMine);
