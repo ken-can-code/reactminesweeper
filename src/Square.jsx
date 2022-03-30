@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
 const Square = (props) => {
-  const {xAxis, yAxis, isMine, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
+  const {xAxis, yAxis, isMine : mineStatus, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine'flagged']
   const [adjacentMinesNum, setAdjacentMinesNum] = useState('');
+  const [isMine, setIsMine] = useState(false);
 
   useEffect(() => {
     if (clearBoard) {
       setSquareState('unrevealed');
       setClearBoard(false);
     }
+    setIsMine(mineStatus);
   }, [clearBoard, setClearBoard]);
 
   return (
     <div
       className={squareState === 'revealed-empty'
       ? 'revealed-empty'
-      : squareState === 'revealed-mine'
+      : squareState === 'revealed-mine' 
+        || (gameOver === true && isMine === true)
       ? 'revealed-mine'
       : 'unrevealed'
       }
@@ -46,6 +49,8 @@ const Square = (props) => {
           ? '📍'
           : squareState === 'revealed-empty'
           ? adjacentMinesNum
+          : squareState === 'revealed-mine'
+          ? 'X'
           : ''
         }</div>
     </div>
@@ -64,13 +69,16 @@ export default Square;
       --> one state for revealed or not
       --> one state for dead or not dead...?
 
+      ** --> Eventually, we went with one state for unrevealed, reavealed-empty, revealed-mine, and flagged
+        --> Then, a separate state for gameOver
+
 ****************BASIC FUNCTIONALITY GOALS****************
   First square click:
       --> Right-click:
           --> Mark square/show flag
           --> Unmark flag if ALREADY marked
       --> Left-click:        
-          1) Mines are placed
+          1) Mines are placed ** --> completed, but mines are placed *BEFORE* first click
           2) Square is revealed
   All susequent left-click clicks:
       --> Mine?
@@ -82,11 +90,13 @@ export default Square;
   Stretch features:
 
   --> show remaining number of mines to player based on number of squares flagged
-  --> when game over, highlight square that caused the game over with big (red?) X
-  --> when game over, show locations of all remaining mines
+  --> when game over, highlight square that caused the game over with big (red?) X --> done but not red
+  --> when game over, show locations of all remaining mines --> done but useEffect dependency array complaining
   --> when game over, show locations where squares were flagged incorrectly
   --> guarantee first move is safe
   --> guarantee first move lands on a space with no adjacent mines, if at all possible
+
+  --> write test suite (puppeteer? cypress?)
 
   --> if revealed square is 0, reveal any adjacent squares until no longer 0's all around
   --> timer
