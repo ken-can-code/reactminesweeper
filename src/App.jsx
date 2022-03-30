@@ -5,7 +5,7 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [clearBoard, setClearBoard] = useState(false);
 
-  function handleLeftClick(mineState, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis) {
+  function handleLeftClick(mineState, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis, setExplodedMine) {
     console.log('left click');
     if (squareState === 'unrevealed') {
       if (mineState === false) { // if not a mine
@@ -13,7 +13,7 @@ function App() {
         let adjacentMineCount = 0;
         for (let column = xAxis - 1; column <= xAxis + 1; column += 1) {
           for (let row = yAxis - 1; row <= yAxis + 1; row += 1) {
-            console.log('math number', row * 10 + column);
+            // console.log('math number', row * 10 + column);
             if (row >= 0 // makes sure not to check a square out of bounds
               && row <= 9
               && column >= 0
@@ -28,6 +28,7 @@ function App() {
       } else { // if it is a mine
         console.log('in mineState true');
         setSquareState('revealed-mine');
+        setExplodedMine(true);
         setGameOver(true);
       }
     }
@@ -52,7 +53,7 @@ function App() {
   }
   
   const squares = [];
-  let totalMines = 30; // total number of mines to be on the grid
+  let totalMines = 20; // total number of mines to be on the grid
   while (totalMines > 0) {
     const randomSquareNum = Math.floor(Math.random() * 100);
     if (squares[randomSquareNum] === undefined) {

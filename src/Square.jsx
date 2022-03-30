@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
 
 const Square = (props) => {
-  const {xAxis, yAxis, isMine : mineStatus, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
-  const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine'flagged']
+  const {xAxis, yAxis, isMine: mineStatus, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
+  const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', flagged']
   const [adjacentMinesNum, setAdjacentMinesNum] = useState('');
   const [isMine, setIsMine] = useState(false);
+  const [explodedMine, setExplodedMine] = useState(false);
+  const [incorrectlyFlagged, setIncorrectlyFlagged] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => { // useful for changing multiple squares at once. Trigger on gameOver or clearBoard
     if (clearBoard) {
       setSquareState('unrevealed');
       setClearBoard(false);
+      setExplodedMine(false);
+      setIncorrectlyFlagged(false);
+    }
+    if (squareState === 'flagged' && mineStatus === false) {
+      console.log('mineStatus and isMine state in order inside incorrectly flagged', mineStatus, isMine)
+      setIncorrectlyFlagged(true);
     }
     setIsMine(mineStatus);
   }, [clearBoard, setClearBoard]);
 
   return (
     <div
-      className={squareState === 'revealed-empty'
+      className={squareState === 'revealed-empty' // assign different classNames based on state
       ? 'revealed-empty'
       : squareState === 'revealed-mine' 
         || (gameOver === true && isMine === true)
@@ -25,7 +33,7 @@ const Square = (props) => {
       }
       onClick={gameOver === false // all left clicks
         ? () => {
-          handleLeftClick(isMine, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis)
+          handleLeftClick(isMine, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis, setExplodedMine)
         }
         : undefined
         }
@@ -37,6 +45,11 @@ const Square = (props) => {
         }
     >
       <div
+      id={explodedMine === true
+      ? 'explodedMine'
+      : incorrectlyFlagged === true
+      ? 'strikeThrough'
+      : ''}
       className='square-contents' // right click on inner square div (flag itself)
       onContextMenu={gameOver === false
         ? (event) => {
@@ -46,7 +59,7 @@ const Square = (props) => {
         }
       >{
           squareState === 'flagged'
-          ? '📍'
+          ? 'F'
           : squareState === 'revealed-empty'
           ? adjacentMinesNum
           : squareState === 'revealed-mine'
@@ -90,7 +103,7 @@ export default Square;
   Stretch features:
 
   --> show remaining number of mines to player based on number of squares flagged
-  --> when game over, highlight square that caused the game over with big (red?) X --> done but not red
+  --> when game over, highlight square that caused the game over with big (red?) X --> done
   --> when game over, show locations of all remaining mines --> done but useEffect dependency array complaining
   --> when game over, show locations where squares were flagged incorrectly
   --> guarantee first move is safe
