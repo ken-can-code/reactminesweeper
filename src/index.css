@@ -88,6 +88,7 @@
 }
 
 #strikeThrough {
+  color: red;
   text-decoration: line-through;
 }
 #current-turn {
