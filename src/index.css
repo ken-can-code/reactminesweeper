@@ -83,6 +83,13 @@
   flex: 1;
   height: 50px;
 }
+#explodedMine {
+  color: red;
+}
+
+#strikeThrough {
+  text-decoration: line-through;
+}
 #current-turn {
   text-align: center;
   font-family: "Courier New", Courier, monospaceMS;
