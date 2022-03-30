@@ -7,15 +7,21 @@ function App() {
 
   function adjMineNum(xCoor, yCoor) {
     let adjMines = 0;
-    console.log('before loop mine num should be 0', adjMines);
-    for (let x = xCoor - 1; x <= xCoor + 1; x += 1) {
-      for (let y = yCoor + 1; y >= yCoor - 1; y -= 1) {
-        if (squares[y * 10 + x].props.isMine === true) {
-          adjMines += 1;
+    // console.log('before loop mine num should be 0', adjMines);
+    for (let adjX = xCoor - 1; adjX <= xCoor + 1; adjX += 1) {
+      for (let adjY = yCoor - 1; adjY <= yCoor + 1; adjY += 1) {
+        if (adjX >= 0 // adjX = 0
+          && adjX <= 9
+          && adjY >= 0 //adjY = -1
+          && adjY <= 9) {
+          if (squares[adjY * 10 + adjX].props.isMine === true) {
+            adjMines += 1;
+          }
         }
       }
     }
-    console.log('in mine counter funtion', adjMineNum);
+
+    console.log('in mine counter funtion', adjMines);
     return adjMines;
   }
 
@@ -69,7 +75,7 @@ function App() {
   }
 
   const squares = []; // tracks which squares should have mines
-  let totalMines = 30; // total number of mines to be on the grid
+  let totalMines = 20; // total number of mines to be on the grid
   while (totalMines > 0) {
     const randomSquareNum = Math.floor(Math.random() * 100);
     if (squares[randomSquareNum] === undefined) {
@@ -130,8 +136,7 @@ function App() {
 
 export default App;
 
-// just got game over working and very quickly got clear button to clear game over state (still need to reset squares)
-// ideally create handleClear function instead of inline function in clear button onClick listener
+// numbers work but they stay on clear and crash on edges of the board
 
 // return the ones digit from any number 0 through 99
 
