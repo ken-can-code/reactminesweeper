@@ -105,6 +105,7 @@ export default Square;
 /*
   Stretch features:
 
+  --> win when all non-mine squares are revealed and maybe show a win message
   --> show remaining number of mines to player based on number of squares flagged
   --> when game over, highlight square that caused the game over with big (red?) X --> done
   --> when game over, show locations of all remaining mines --> done but useEffect dependency array complaining
