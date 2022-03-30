@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Square = (props) => {
-  const {xAxis, yAxis, isMine: mineStatus, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
+  const {xAxis, yAxis, mineStatus, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', flagged']
   const [adjacentMinesNum, setAdjacentMinesNum] = useState('');
   const [isMine, setIsMine] = useState(false);
@@ -20,6 +20,7 @@ const Square = (props) => {
       setIncorrectlyFlagged(true);
     }
     setIsMine(mineStatus);
+    console.log('in useEffect at end', isMine);
   }, [clearBoard, setClearBoard]);
 
   return (
@@ -47,7 +48,9 @@ const Square = (props) => {
       <div
       id={explodedMine === true
       ? 'explodedMine'
-      : incorrectlyFlagged === true
+      : gameOver === true
+        && squareState === 'flagged'
+        && isMine === false
       ? 'strikeThrough'
       : ''}
       className='square-contents' // right click on inner square div (flag itself)
@@ -59,11 +62,11 @@ const Square = (props) => {
         }
       >{
           squareState === 'flagged'
-          ? 'F'
+          ? '📍'
           : squareState === 'revealed-empty'
           ? adjacentMinesNum
           : squareState === 'revealed-mine'
-          ? 'X'
+          ? '💣'
           : ''
         }</div>
     </div>

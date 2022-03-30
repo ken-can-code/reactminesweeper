@@ -18,7 +18,7 @@ function App() {
               && row <= 9
               && column >= 0
               && column <= 9
-              && squares[row * 10 + column].props.isMine === true) {
+              && squares[row * 10 + column].props.mineStatus === true) {
               adjacentMineCount += 1;
             }
           }
@@ -53,6 +53,7 @@ function App() {
   }
   
   const squares = [];
+
   let totalMines = 20; // total number of mines to be on the grid
   while (totalMines > 0) {
     const randomSquareNum = Math.floor(Math.random() * 100);
@@ -72,7 +73,7 @@ function App() {
       handleRightClick={handleRightClick}
       clearBoard={clearBoard}
       setClearBoard={setClearBoard}
-      isMine={squares[i] === true} // explicitly evaluate if true so it returns false if not, instead of undefined
+      mineStatus={squares[i] === true} // explicitly evaluate if true so it returns false if not, instead of undefined
       gameOver={gameOver}
     />;
   }
