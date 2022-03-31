@@ -93,7 +93,7 @@
 #strikeThrough {
   color: red;
   text-decoration: line-through;
-  animation: strikeThrough 4s linear;
+  animation: strikeThrough 3s linear;
 }
 #current-turn {
   text-align: center;
