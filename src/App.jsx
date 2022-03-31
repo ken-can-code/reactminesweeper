@@ -7,7 +7,7 @@ function App() {
   const [clearBoard, setClearBoard] = useState(false);
 
   let squaresRevealed = 0;
-  let boardSize = 100;
+  let numOfSquares = 100;
   function handleLeftClick(mineState, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis, setExplodedMine) {
     console.log('left click');
     if (squareState === 'unrevealed') {
@@ -29,7 +29,7 @@ function App() {
         setSquareState('revealed-empty');
         squaresRevealed += 1;
         console.log('squaresRevealed', squaresRevealed);
-        if (squaresRevealed === (boardSize - numOfMines)) {
+        if (squaresRevealed === (numOfSquares - numOfMines)) {
           setGameWin(true);
           setGameOver(true);
         }
@@ -65,16 +65,16 @@ function App() {
   let numOfMines = 16; // set number of mines to have on the board for the game
   let minesToBePlaced = numOfMines;
   while (minesToBePlaced > 0) {
-    console.log('minesToBePlaced at start of while loop', minesToBePlaced);
+    // console.log('minesToBePlaced at start of while loop', minesToBePlaced);
     const randomSquareNum = Math.floor(Math.random() * 100);
     if (squares[randomSquareNum] === undefined) {
       squares[randomSquareNum] = true;
       minesToBePlaced -= 1;
     }
-    console.log('minesToBePlaced at end of while loop', minesToBePlaced - 1);
+    // console.log('minesToBePlaced at end of while loop', minesToBePlaced - 1);
   }
   
-  for (let i = 0; i < boardSize; i += 1) {
+  for (let i = 0; i < numOfSquares; i += 1) {
     squares[i] =
     <Square
       key={`key${i}`}
