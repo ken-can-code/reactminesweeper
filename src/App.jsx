@@ -3,17 +3,19 @@ import Square from './Square';
 
 function App() {
   const [gameOver, setGameOver] = useState(false);
+  const [gameWin, setGameWin] = useState(false);
   const [clearBoard, setClearBoard] = useState(false);
 
+  let squaresRevealed = 0;
+  let boardSize = 100;
   function handleLeftClick(mineState, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis, setExplodedMine) {
     console.log('left click');
     if (squareState === 'unrevealed') {
-      if (mineState === false) { // if not a mine
+      if (mineState === false) { // if it is not a mine
         console.log('in mineState false');
         let adjacentMineCount = 0;
         for (let column = xAxis - 1; column <= xAxis + 1; column += 1) {
           for (let row = yAxis - 1; row <= yAxis + 1; row += 1) {
-            // console.log('math number', row * 10 + column);
             if (row >= 0 // makes sure not to check a square out of bounds
               && row <= 9
               && column >= 0
@@ -25,6 +27,12 @@ function App() {
         }
         setAdjacentMinesNum(adjacentMineCount);
         setSquareState('revealed-empty');
+        squaresRevealed += 1;
+        console.log('squaresRevealed', squaresRevealed);
+        if (squaresRevealed === (boardSize - numOfMines)) {
+          setGameWin(true);
+          setGameOver(true);
+        }
       } else { // if it is a mine
         console.log('in mineState true');
         setSquareState('revealed-mine');
@@ -50,20 +58,23 @@ function App() {
   function handleClear() { // work in progress
     setClearBoard(true);
     setGameOver(false);
+    setGameWin(false);
   }
   
   const squares = [];
-
-  let totalMines = 20; // total number of mines to be on the grid
-  while (totalMines > 0) {
+  let numOfMines = 16; // set number of mines to have on the board for the game
+  let minesToBePlaced = numOfMines;
+  while (minesToBePlaced > 0) {
+    console.log('minesToBePlaced at start of while loop', minesToBePlaced);
     const randomSquareNum = Math.floor(Math.random() * 100);
     if (squares[randomSquareNum] === undefined) {
       squares[randomSquareNum] = true;
-      totalMines -= 1;
+      minesToBePlaced -= 1;
     }
+    console.log('minesToBePlaced at end of while loop', minesToBePlaced - 1);
   }
   
-  for (let i = 0; i < 100; i += 1) {
+  for (let i = 0; i < boardSize; i += 1) {
     squares[i] =
     <Square
       key={`key${i}`}
@@ -78,7 +89,6 @@ function App() {
     />;
   }
   // console.log(squares[0]);
-  // console.log('square at position 0 raw boolean value', squares[0].props.isMine);
 
   return (
     <div>
@@ -95,7 +105,13 @@ function App() {
         </div>
       </div>
       <div className='board-right'>
-        <p id='win'>{gameOver ? 'game over!' : ''}</p>
+        <p id='win'>{
+          gameOver === false
+        ? ''
+        : gameWin === true
+        ? 'you win!'
+        : 'you lose!'
+        }</p>
       </div>
     </div>
     <div className='instruction-area'>
