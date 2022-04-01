@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 const Square = (props) => {
   const {isMine, handleClick, gameOver, restart, setRestart, xAxis, yAxis} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', 'flagged']
+  const [dispMineNum, setDispMineNum] = useState(false);
 
   useEffect(() => {
     setSquareState('unrevealed');

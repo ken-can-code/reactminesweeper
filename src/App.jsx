@@ -33,7 +33,7 @@ function App() {
       if (mineState === false) { // non mine square logic
         // const xcoordinate = event.target.
         console.log('x and y axis, in order', xAxis, yAxis);
-        event.target.textContent = adjMineNum(xAxis, yAxis);
+        squareContents.textContent = adjMineNum(xAxis, yAxis);
         console.log('in mineState false');
         // event.target.className = 'revealed-empty'; // no longer needed -> handled by state
         setSquareState('revealed-empty'); // in theory, square becomes minty-green based on state
