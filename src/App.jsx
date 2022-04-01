@@ -75,7 +75,7 @@ function App() {
   }
 
   const squares = []; // tracks which squares should have mines
-  let totalMines = 20; // total number of mines to be on the grid
+  let totalMines = 16; // total number of mines to be on the grid
   while (totalMines > 0) {
     const randomSquareNum = Math.floor(Math.random() * 100);
     if (squares[randomSquareNum] === undefined) {

@@ -68,13 +68,34 @@ export default Square;
       --> Reveal the square
 */
 
+/* ***************** features or bugs currently being worked on: *******************
+--> restart button not clearing numbered squares
+--> win condition
+--> numbers are not the correct size
+
+*************** stretch features ***************
+--> sounds? music? (music may be a bad idea...)
+--> when lose, reveal the square that caused a loss
+--> reveal all remaining mines when die (or win?)
+--> remaining mine counter displayed on screen
+--> guarantee first move is safe
+--> automatically reveal all surrounding squares when left click reveals a 0
+--> timer
+--> keep high score
+  --> keep high score in local browser storage
+    extra stretch feature: --> keep high scores in a database
+
+
+
+*/
+
 
 
 // ******************* below has been complete ***********************
 // assign a fixed number of mines to grid completely randomly
 
 // keep track of total number of mines to assign
-// e.g. let numOfMines = 30;
+// e.g. let numOfMines = 20;
 // loop through squares in random order and assign mine to square if not already have mine
 // continue loop until no more mines
 
