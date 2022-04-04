@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 const Square = (props) => {
   const {isMine, handleClick, gameOver, restart, setRestart, xAxis, yAxis} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', 'flagged']
-  const [dispMineNum, setDispMineNum] = useState(false);
+  const [dispMineNum, setDispMineNum] = useState('');
 
   useEffect(() => {
     setSquareState('unrevealed');
     setRestart(false);
+    setDispMineNum('');
   }, [restart, setRestart])
 
   return (
@@ -19,7 +20,7 @@ const Square = (props) => {
         : 'unrevealed' // unrevealed or flagged becomes 'unrevealed'
       }
       onClick={gameOver === false ? function (event) { // handle left click
-        handleClick(event, isMine, setSquareState, xAxis, yAxis);
+        handleClick(event, isMine, setSquareState, setDispMineNum, xAxis, yAxis);
         } : undefined}
       onContextMenu={gameOver === false ? function (event) { // handle right click
         handleClick(event, isMine, setSquareState)
@@ -32,13 +33,26 @@ const Square = (props) => {
         onContextMenu={gameOver === false ? function (event) { // handle right click
           handleClick(event, isMine, setSquareState)
           } : function (event) {
-            event.preventDefault();
+            event.preventDefault(); // when game IS over, prevents right click menu from spawning
           }
         }
-      >{squareState === 'flagged' ? '📍' : ''}</div> {/* flag gets placed here if needed */}
+      >{squareState === 'flagged' ? '📍' : dispMineNum}</div> {/* flag gets placed here if needed */}
     </div>
   )
 }
+
+// square contents can be 3 things:
+//   --> blank when squareState IS NOT flagged
+//   --> flag when squareState is flagged
+//   --> dispMineNum when not flagged
+//     --> technically, disMineNum can also be blank,
+//     --> the summary is, flag when 'flagged', dispMineNum when not 'flagged'
+
+/*
+  
+  
+
+*/
 
 // const kenSquare = document.getElementById('kenSquare');
 // kenSquare.addEventListener('click', handleClick);
