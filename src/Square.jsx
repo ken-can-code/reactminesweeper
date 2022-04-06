@@ -41,19 +41,6 @@ const Square = (props) => {
   )
 }
 
-// square contents can be 3 things:
-//   --> blank when squareState IS NOT flagged
-//   --> flag when squareState is flagged
-//   --> dispMineNum when not flagged
-//     --> technically, disMineNum can also be blank,
-//     --> the summary is, flag when 'flagged', dispMineNum when not 'flagged'
-
-/*
-  
-  
-
-*/
-
 // const kenSquare = document.getElementById('kenSquare');
 // kenSquare.addEventListener('click', handleClick);
 
@@ -84,23 +71,22 @@ export default Square;
 */
 
 /* ***************** features or bugs currently being worked on: *******************
---> restart button not clearing numbered squares
+--> restart button not clearing numbered squares - fixed
 --> win condition
---> numbers are not the correct size
+--> numbers are not the correct size - fixed
 
 *************** stretch features ***************
 --> sounds? music? (music may be a bad idea...)
---> when lose, reveal the square that caused a loss
 --> reveal all remaining mines when die (or win?)
---> remaining mine counter displayed on screen
---> guarantee first move is safe
---> automatically reveal all surrounding squares when left click reveals a 0
---> timer
---> keep high score
+  --> when lose, reveal the square that caused a loss
+  *** working on *** --> guarantee first move is safe
+  --> automatically reveal all surrounding squares when left click reveals a 0
+  --> timer
+  --> keep high score
   --> keep high score in local browser storage
     extra stretch feature: --> keep high scores in a database
-
-
+  
+  --> remaining mine counter displayed on screen
 
 */
 

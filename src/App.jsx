@@ -4,6 +4,7 @@ import Square from './Square';
 function App() {
   const [gameOver, setGameOver] = useState(false);
   const [restart, setRestart] = useState(false);
+  const [firstClicked, setFirstClicked] = useState(false);
 
   function adjMineNum(xCoor, yCoor) {
     let adjMines = 0;
@@ -30,6 +31,9 @@ function App() {
     // console.log('event', event);
     // console.log('mineState', mineState);
     if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
+      // if (firstClicked === false) { // attempted
+      //   generateMines();
+      // }
       if (mineState === false) { // non mine square logic
         // const xcoordinate = event.target.
         console.log('x and y axis, in order', xAxis, yAxis);
@@ -37,7 +41,8 @@ function App() {
         console.log('in mineState false');
         // event.target.className = 'revealed-empty'; // no longer needed -> handled by state
         setSquareState('revealed-empty'); // in theory, square becomes minty-green based on state
-      } else {
+        setFirstClicked(true);
+      } else { // if left clicked and IS a mine
         console.log('in mineState true');
         // event.target.className = 'revealed-mine'; // no longer needed -> handled by state
         setSquareState('revealed-mine'); // in theory, square becomes red based on state
@@ -69,19 +74,23 @@ function App() {
     } // closes the else
   } // closes the handleClick function
 
-  function handleRestart() {
-    setGameOver(false);
-    setRestart(true); 
+  function handleRestart() {  // (PROBABLY) All stuff in this function runs BEFORE
+    setGameOver(false);      // the useEffect in Square.jsx runs
+    setRestart(true);
+    setFirstClicked(false);
   }
 
   const squares = []; // tracks which squares should have mines
-  let totalMines = 16; // total number of mines to be on the grid
-  while (totalMines > 0) {
-    const randomSquareNum = Math.floor(Math.random() * 100);
-    if (squares[randomSquareNum] === undefined) {
-      squares[randomSquareNum] = true;
-      // console.log(`Mined square`, squares[randomSquareNum]); // counts number of mines
-      totalMines -= 1;
+  
+  function generateMines() {
+    let totalMines = 16; // total number of mines to be on the grid
+    while (totalMines > 0) {
+      const randomSquareNum = Math.floor(Math.random() * 100);
+      if (squares[randomSquareNum] === undefined) {
+        squares[randomSquareNum] = true;
+        // console.log(`Mined square`, squares[randomSquareNum]); // counts number of mines
+        totalMines -= 1;
+      }
     }
   }
 
@@ -98,6 +107,7 @@ function App() {
     />;
   }
 
+  
   return (
     <div>
       <p className='section-title'>Mine Sweeper</p>
@@ -160,3 +170,6 @@ const testData = [
                   [4, 6, 0,],
                   ];
 */
+
+// maybe put mineState in the state of this component?
+// we were working on guaranteeing first move is safe 4-6-22
