@@ -4,6 +4,9 @@ const Square = (props) => {
   const {isMine, handleClick, gameOver, restart, setRestart, xAxis, yAxis} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', 'flagged']
   const [dispMineNum, setDispMineNum] = useState('');
+  // const [minePresent, setMinePresent] = useState(false); // currently doing nothing
+
+  // console.log('isMine', isMine);
 
   useEffect(() => {
     setSquareState('unrevealed');
