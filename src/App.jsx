@@ -5,7 +5,7 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [restart, setRestart] = useState(false);
   const [boardMines, setBoardMines] = useState([]); // set to true or undefined currently
-  // const [firstClicked, setFirstClicked] = useState(false);
+  const [firstClicked, setFirstClicked] = useState(false);
 
   function adjMineNum(xCoor, yCoor) {
     let adjMines = 0;
@@ -31,12 +31,11 @@ function App() {
     const squareContents = event.target.firstChild;
     // console.log('event', event);
     // console.log('mineState', mineState);
-    if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
+    if (event.type === 'click' && squareContents.innerHTML === '' && firstClicked === 'true') { // left click logic
       // if (firstClicked === false) { // attempted
       //   generateMines();
       // }
       if (boardMines[yAxis * 10 + xAxis] === undefined) { // non mine square logic
-        // const xcoordinate = event.target.
         console.log('x and y axis, in order', xAxis, yAxis);
         setDispMineNum(adjMineNum(xAxis, yAxis));
         console.log('in mineState false');
@@ -72,16 +71,25 @@ function App() {
         setSquareState('unrevealed'); // in theory removes flag based on no longer being in 'flagged' state
         console.log(`VISUALFLAG.textContent 2`, visualFlag.textContent);
       }
-    } // closes the else
+    } else if (firstClicked === false) {
+        setFirstClicked(true);
+        event.target.className = 'revealed-empty';
+        const initialStateArr = []; // create array to pass into setBoardMines
+        initialStateArr[yAxis * 10 + xAxis] = 'no mines here';
+        // setBoardMines(initialStateArr);
+        generateMines(initialStateArr);
+
+    }
   } // closes the handleClick function
 
   function handleRestart() {  // (PROBABLY) All stuff in this function runs BEFORE
     setGameOver(false);      // the useEffect in Square.jsx runs
     setRestart(true);
-    // setFirstClicked(false);
+    setFirstClicked(false);
+    setBoardMines([]);
   }
 
-  const squares = []
+  const squares = [];
 
   for (let i = 0; i < 100; i += 1) {
     squares[i] = <Square
@@ -98,20 +106,20 @@ function App() {
 
   console.log('************ rerendered App componente HERE ************')
   
-  useEffect(() => {
-    const squaresStates = []; // tracks which squaresStates should have mines
+  function generateMines (firstClickArr) {
+    // const squaresStates = []; // tracks which squaresStates should have mines
     let totalMines = 16; // total number of mines to be on the grid
     while (totalMines > 0) {
       const randomSquareNum = Math.floor(Math.random() * 100);
-      if (squaresStates[randomSquareNum] === undefined) {
-        squaresStates[randomSquareNum] = true;
+      if (firstClickArr[randomSquareNum] === undefined) {
+        firstClickArr[randomSquareNum] = true;
         // console.log(`Mined square`, squaresStates[randomSquareNum]); // counts number of mines
         totalMines -= 1;
       }
     }
 
-    setBoardMines(squaresStates);
-  }, [restart])
+    setBoardMines(firstClickArr);
+  }
 
   // console.log(squares[0]);
   // rearchitect to have mines as states inside each square component
