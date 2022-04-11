@@ -5,6 +5,7 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [gameWin, setGameWin] = useState(false);
   const [clearBoard, setClearBoard] = useState(false);
+  const [mineLocations, setMineLocations] = useState([]);
 
   let squaresRevealed = 0;
   let numOfSquares = 100;
@@ -61,17 +62,19 @@ function App() {
     setGameWin(false);
   }
   
-  const squares = [];
-  let numOfMines = 16; // set number of mines to have on the board for the game
-  let minesToBePlaced = numOfMines;
-  while (minesToBePlaced > 0) {
-    // console.log('minesToBePlaced at start of while loop', minesToBePlaced);
-    const randomSquareNum = Math.floor(Math.random() * 100);
-    if (squares[randomSquareNum] === undefined) {
-      squares[randomSquareNum] = true;
-      minesToBePlaced -= 1;
+  function mineGenerator() {
+    const squares = [];
+    let numOfMines = 16; // set number of mines to have on the board for the game
+    let minesToBePlaced = numOfMines;
+    while (minesToBePlaced > 0) {
+      // console.log('minesToBePlaced at start of while loop', minesToBePlaced);
+      const randomSquareNum = Math.floor(Math.random() * 100);
+      if (squares[randomSquareNum] === undefined) {
+        squares[randomSquareNum] = true;
+        minesToBePlaced -= 1;
+      }
+      // console.log('minesToBePlaced at end of while loop', minesToBePlaced - 1);
     }
-    // console.log('minesToBePlaced at end of while loop', minesToBePlaced - 1);
   }
   
   for (let i = 0; i < numOfSquares; i += 1) {
