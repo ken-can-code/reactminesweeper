@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 const Square = (props) => {
-  const {xAxis, yAxis, mineStatus, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
+  const {xAxis, yAxis, mineLocations: isMine, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', flagged']
   const [adjacentMinesNum, setAdjacentMinesNum] = useState('');
-  const [isMine, setIsMine] = useState(false);
   const [explodedMine, setExplodedMine] = useState(false);
 
   useEffect(() => { // useful for changing multiple squares at once. Trigger on gameOver or clearBoard
@@ -13,7 +12,6 @@ const Square = (props) => {
       setClearBoard(false);
       setExplodedMine(false);
     }
-    setIsMine(mineStatus);
     console.log('in useEffect at end', isMine);
   }, [clearBoard, setClearBoard]);
 

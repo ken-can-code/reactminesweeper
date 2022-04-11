@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Square from './Square';
 
 function App() {
@@ -8,25 +8,32 @@ function App() {
   const [mineLocations, setMineLocations] = useState([]);
 
   let squaresRevealed = 0;
-  let numOfSquares = 100;
+  const numOfSquares = 100;
+  const numOfMines = 16; // set number of mines to have on the board for the game
+
+  function calcAdjacentMines(xAxis, yAxis) {
+    let adjacentMineCount = 0;
+    for (let column = xAxis - 1; column <= xAxis + 1; column += 1) {
+      for (let row = yAxis - 1; row <= yAxis + 1; row += 1) {
+        if (row >= 0 // makes sure not to check a square out of bounds
+        && row <= 9
+        && column >= 0
+        && column <= 9
+        && mineLocations[row * 10 + column] === true) {
+          adjacentMineCount += 1;
+        }
+      }
+    }
+
+    return adjacentMineCount;
+  }
+
   function handleLeftClick(mineState, squareState, setSquareState, setAdjacentMinesNum, xAxis, yAxis, setExplodedMine) {
     console.log('left click');
     if (squareState === 'unrevealed') {
       if (mineState === false) { // if it is not a mine
         console.log('in mineState false');
-        let adjacentMineCount = 0;
-        for (let column = xAxis - 1; column <= xAxis + 1; column += 1) {
-          for (let row = yAxis - 1; row <= yAxis + 1; row += 1) {
-            if (row >= 0 // makes sure not to check a square out of bounds
-              && row <= 9
-              && column >= 0
-              && column <= 9
-              && squares[row * 10 + column].props.mineStatus === true) {
-              adjacentMineCount += 1;
-            }
-          }
-        }
-        setAdjacentMinesNum(adjacentMineCount);
+        setAdjacentMinesNum(calcAdjacentMines(xAxis, yAxis));
         setSquareState('revealed-empty');
         squaresRevealed += 1;
         console.log('squaresRevealed', squaresRevealed);
@@ -63,35 +70,44 @@ function App() {
   }
   
   function mineGenerator() {
-    const squares = [];
-    let numOfMines = 16; // set number of mines to have on the board for the game
+    const squarePlacement = [];
     let minesToBePlaced = numOfMines;
     while (minesToBePlaced > 0) {
       // console.log('minesToBePlaced at start of while loop', minesToBePlaced);
       const randomSquareNum = Math.floor(Math.random() * 100);
-      if (squares[randomSquareNum] === undefined) {
-        squares[randomSquareNum] = true;
+      if (squarePlacement[randomSquareNum] === undefined) {
+        squarePlacement[randomSquareNum] = true;
         minesToBePlaced -= 1;
       }
       // console.log('minesToBePlaced at end of while loop', minesToBePlaced - 1);
     }
+
+    setMineLocations(squarePlacement);
+    console.log('mineGenerator finished running');
   }
+
+  const squares = [];
+
+  console.log('mineLocations', mineLocations);
   
   for (let i = 0; i < numOfSquares; i += 1) {
+    console.log('now squares are being placed on the board and assigned props');
     squares[i] =
     <Square
       key={`key${i}`}
       xAxis={i % 10}
       yAxis={Math.floor(i / 10)}
+      mineLocations={mineLocations[i] === true} // must evaluate specifically for true so undefined is false
       handleLeftClick={handleLeftClick}
       handleRightClick={handleRightClick}
       clearBoard={clearBoard}
       setClearBoard={setClearBoard}
-      mineStatus={squares[i] === true} // explicitly evaluate if true so it returns false if not, instead of undefined
       gameOver={gameOver}
     />;
   }
   // console.log(squares[0]);
+
+  useEffect(mineGenerator, [clearBoard])
 
   return (
     <div>
