@@ -12,7 +12,6 @@ const Square = (props) => {
       setClearBoard(false);
       setExplodedMine(false);
     }
-    console.log('in useEffect at end', isMine);
   }, [clearBoard, setClearBoard]);
 
   return (
