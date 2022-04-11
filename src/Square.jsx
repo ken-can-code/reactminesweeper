@@ -96,16 +96,13 @@ export default Square;
 /*
   Stretch features:
 
-  --> win when all non-mine squares are revealed and maybe show a win message
+  ✅ --> win when all non-mine squares are revealed and maybe show a win message
   --> show remaining number of mines to player based on number of squares flagged
-  --> when game over, highlight square that caused the game over with big (red?) X --> done
-  --> when game over, show locations of all remaining mines --> done but useEffect dependency array complaining
-  --> when game over, show locations where squares were flagged incorrectly
-  --> guarantee first move is safe
-  --> guarantee first move lands on a space with no adjacent mines, if at all possible
-
-  --> write test suite (puppeteer? cypress?)
-
+  ✅ --> when game over, highlight square that caused the game over
+  ✅ --> when game over, show locations of all mines
+  ✅ --> when game over, show locations where squares were flagged incorrectly
+  ✅ --> guarantee first move is safe
+  ✅ --> guarantee first move lands on a space with no adjacent mines
   --> if revealed square is 0, reveal any adjacent squares until no longer 0's all around
   --> timer
   --> best score tracking in browser cache
@@ -115,7 +112,7 @@ export default Square;
   --> sound effects
   --> miniature mine graphics
   --> user defined dynamic board size and number of mines
-
+  --> write test suite (puppeteer? cypress?)
 */
 
 
