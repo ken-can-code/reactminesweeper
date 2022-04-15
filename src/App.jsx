@@ -8,9 +8,15 @@ function App() {
   const [mineLocations, setMineLocations] = useState([]);
   const [firstClicked, setFirstClicked] = useState(false);
 
-  let squaresRevealed = 0;
+  let squaresRevealed = 1; // because begins counting after first click
   const numOfSquares = 100;
   const numOfMines = 16; // set number of mines to have on the board for the game
+
+  // function revealAdjacentZeros(xAxis, yAxis) {
+  //   const adjacentPositionsSet = generateAdjacentPositionsSet(xAxis, yAxis);
+  //   adjacentPositionsSet.forEach((squareIdx) => {
+  //   });
+  // }
 
   function generateAdjacentPositionsSet(xAxis, yAxis) {
     const adjacentPositionsSet = new Set();
@@ -49,10 +55,24 @@ function App() {
     if (squareState === 'unrevealed') {
       if (mineState === false) { // if it is not a mine
         console.log('in mineState false');
-        setAdjacentMinesNum(calcAdjacentMines(xAxis, yAxis));
+        const numOfAdjacentMines = calcAdjacentMines(xAxis, yAxis);
+        setAdjacentMinesNum(numOfAdjacentMines);
         setSquareState('revealed-empty');
         squaresRevealed += 1;
         console.log('squaresRevealed', squaresRevealed);
+        if (numOfAdjacentMines === 0) {
+          const adjacentPositionsSet = generateAdjacentPositionsSet(xAxis, yAxis);
+          console.log('adjacent positions set in handleLeftClick', adjacentPositionsSet);
+          adjacentPositionsSet.forEach((squareIdx) => {
+            const adjacentSquare = document.getElementById(squareIdx);
+            console.log('adjacentSquare div', adjacentSquare);
+            console.log(adjacentSquare.firstChild.textContent);
+            if (adjacentSquare.firstChild.textContent === '' && squaresRevealed < 20) { // temp to prevent endless loop stops at 20
+              adjacentSquare.click(); // issue is mines not yet generated
+              console.log('clicked here');
+            }
+          })
+        }
         if (squaresRevealed === (numOfSquares - numOfMines)) {
           setGameWin(true);
           setGameOver(true);
@@ -114,6 +134,7 @@ function App() {
     squares[i] =
     <Square
       key={`key${i}`}
+      idx={i}
       xAxis={i % 10}
       yAxis={Math.floor(i / 10)}
       mineLocations={mineLocations[i] === true} // must evaluate specifically for true so undefined is false
@@ -124,7 +145,7 @@ function App() {
       gameOver={gameOver}
     />;
   }
-  // console.log(squares[0]);
+  // console.log('first square component', squares[0]);
 
   return (
     <div>

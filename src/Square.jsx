@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Square = (props) => {
-  const {xAxis, yAxis, mineLocations: isMine, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
+  const {idx, xAxis, yAxis, mineLocations: isMine, handleLeftClick, handleRightClick, clearBoard, setClearBoard, gameOver} = props;
   const [squareState, setSquareState] = useState('unrevealed'); // ['unrevealed', 'revealed-empty', 'revealed-mine', flagged']
   const [adjacentMinesNum, setAdjacentMinesNum] = useState('');
   const [explodedMine, setExplodedMine] = useState(false);
@@ -16,6 +16,7 @@ const Square = (props) => {
 
   return (
     <div
+      id={idx}
       className={squareState === 'revealed-empty' // assign different classNames based on state
       ? 'revealed-empty'
       : squareState === 'revealed-mine' 
@@ -37,7 +38,7 @@ const Square = (props) => {
         }
     >
       <div
-      id={explodedMine === true
+      id={explodedMine === true // needs fix, id must be unique, but for now works
       ? 'explodedMine'
       : gameOver === true
         && squareState === 'flagged'
