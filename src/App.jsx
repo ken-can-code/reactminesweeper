@@ -27,9 +27,8 @@ function App() {
     return adjMines;
   }
 
-  function handleClick(event, mineState, setSquareState, setDispMineNum, xAxis, yAxis) {
+  async function handleClick(event, mineState, setSquareState, setDispMineNum, xAxis, yAxis) {
     const squareContents = event.target.firstChild;
-
     if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
       // if (firstClicked === false) { // attempted
       //   generateMines();
@@ -37,7 +36,7 @@ function App() {
       console.log('reached here');
       if (boardMines[yAxis * 10 + xAxis] === undefined && firstClicked === true) { // non mine square logic
         console.log('x and y axis, in order', xAxis, yAxis);
-        setDispMineNum(adjMineNum(xAxis, yAxis));
+        setDispMineNum(adjMineNum(xAxis, yAxis)); // puts the adjacent mine num into state, which displays in square
         console.log('in mineState false');
         // event.target.className = 'revealed-empty'; // no longer needed -> handled by state
         setSquareState('revealed-empty'); // in theory, square becomes minty-green based on state
@@ -51,13 +50,14 @@ function App() {
         // allSquares.forEach((elem) => { // end game death logic // commented this out to avoid problems
         //   elem.parentNode.setAttribute('disabled', true);
         // });
-      } else if (firstClicked === false) {
-          setFirstClicked(true);
-          event.target.className = 'revealed-empty';
-          const initialStateArr = []; // create array to pass into setBoardMines
-          initialStateArr[yAxis * 10 + xAxis] = 'no mines here';
-          // setBoardMines(initialStateArr);
-          generateMines(initialStateArr);
+      } else if (firstClicked === false) { // first click guaranteed safe logic
+        setFirstClicked(true);
+        setSquareState('revealed-empty'); // use state to update rather than directly updating className
+        const initialStateArr = []; // create array to pass into setBoardMines
+        initialStateArr[yAxis * 10 + xAxis] = 'no mines here';
+        await generateMines(initialStateArr);
+        console.log('boardMines', boardMines);
+        await setDispMineNum(adjMineNum(xAxis, yAxis));
       }
     } else if (event.type === 'contextmenu') { // right click logic
       event.preventDefault(); // prevents context menu from appearing for right click
@@ -118,6 +118,7 @@ function App() {
     }
 
     setBoardMines(firstClickArr);
+    console.log('generateMines is completed here');
   }
 
   // console.log(squares[0]);
