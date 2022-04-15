@@ -29,20 +29,20 @@ function App() {
 
   function handleClick(event, mineState, setSquareState, setDispMineNum, xAxis, yAxis) {
     const squareContents = event.target.firstChild;
-    // console.log('event', event);
-    // console.log('mineState', mineState);
-    if (event.type === 'click' && squareContents.innerHTML === '' && firstClicked === 'true') { // left click logic
+
+    if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
       // if (firstClicked === false) { // attempted
       //   generateMines();
       // }
-      if (boardMines[yAxis * 10 + xAxis] === undefined) { // non mine square logic
+      console.log('reached here');
+      if (boardMines[yAxis * 10 + xAxis] === undefined && firstClicked === true) { // non mine square logic
         console.log('x and y axis, in order', xAxis, yAxis);
         setDispMineNum(adjMineNum(xAxis, yAxis));
         console.log('in mineState false');
         // event.target.className = 'revealed-empty'; // no longer needed -> handled by state
         setSquareState('revealed-empty'); // in theory, square becomes minty-green based on state
         // setFirstClicked(true);
-      } else { // if left clicked and IS a mine
+      } else if (firstClicked === true) { // if left clicked and IS a mine
         console.log('in mineState true');
         // event.target.className = 'revealed-mine'; // no longer needed -> handled by state
         setSquareState('revealed-mine'); // in theory, square becomes red based on state
@@ -51,6 +51,13 @@ function App() {
         // allSquares.forEach((elem) => { // end game death logic // commented this out to avoid problems
         //   elem.parentNode.setAttribute('disabled', true);
         // });
+      } else if (firstClicked === false) {
+          setFirstClicked(true);
+          event.target.className = 'revealed-empty';
+          const initialStateArr = []; // create array to pass into setBoardMines
+          initialStateArr[yAxis * 10 + xAxis] = 'no mines here';
+          // setBoardMines(initialStateArr);
+          generateMines(initialStateArr);
       }
     } else if (event.type === 'contextmenu') { // right click logic
       event.preventDefault(); // prevents context menu from appearing for right click
@@ -71,16 +78,8 @@ function App() {
         setSquareState('unrevealed'); // in theory removes flag based on no longer being in 'flagged' state
         console.log(`VISUALFLAG.textContent 2`, visualFlag.textContent);
       }
-    } else if (firstClicked === false) {
-        setFirstClicked(true);
-        event.target.className = 'revealed-empty';
-        const initialStateArr = []; // create array to pass into setBoardMines
-        initialStateArr[yAxis * 10 + xAxis] = 'no mines here';
-        // setBoardMines(initialStateArr);
-        generateMines(initialStateArr);
-
-    }
-  } // closes the handleClick function
+    } // closes the handleClick function
+  }
 
   function handleRestart() {  // (PROBABLY) All stuff in this function runs BEFORE
     setGameOver(false);      // the useEffect in Square.jsx runs
