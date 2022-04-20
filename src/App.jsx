@@ -7,22 +7,34 @@ function App() {
   const [boardMines, setBoardMines] = useState([]); // set to true or undefined currently
   const [firstClicked, setFirstClicked] = useState(false);
 
-  function adjMineNum(xCoor, yCoor, sourceOfMinePositions) {
-    let adjMines = 0;
-    // console.log('before loop mine num should be 0', adjMines);
+  function adjSquarePositions(xCoor, yCoor) {
+    const listOfSquareIdsAsKeys = new Set(); // {86, 87, 85, 77}
+
     for (let adjX = xCoor - 1; adjX <= xCoor + 1; adjX += 1) {
       for (let adjY = yCoor - 1; adjY <= yCoor + 1; adjY += 1) {
         if (adjX >= 0 // adjX = 0
           && adjX <= 9
           && adjY >= 0 //adjY = -1
           && adjY <= 9) {
-          if (sourceOfMinePositions[adjY * 10 + adjX] === true) {
-            adjMines += 1;
-          }
+          // do something at every square surrounding (and including) the clicked square
+          listOfSquareIdsAsKeys.add(adjY * 10 + adjX); // keeping track of each square ID surrounding the click
         }
       }
     }
 
+    return listOfSquareIdsAsKeys;
+  }
+
+  function adjMineNum(xCoor, yCoor) {
+    let adjMines = 0;
+
+    const listOfSquares = adjSquarePositions(xCoor, yCoor);
+    listOfSquares.forEach((idxOfSquare) => { // checks each adjacent square
+      if (boardMines[idxOfSquare] === true) { // checking if that adjacent square is a mine
+        adjMines += 1; // if so, add to the count
+      }
+    });
+    
     console.log('in mine counter funtion', adjMines);
     return adjMines;
   }
@@ -30,9 +42,6 @@ function App() {
   function handleClick(event, mineState, setSquareState, setDispMineNum, xAxis, yAxis) {
     const squareContents = event.target.firstChild;
     if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
-      // if (firstClicked === false) { // attempted
-      //   generateMines();
-      // }
       console.log('reached here');
       if (boardMines[yAxis * 10 + xAxis] === undefined && firstClicked === true) { // non mine square logic
         console.log('x and y axis, in order', xAxis, yAxis);
@@ -53,10 +62,10 @@ function App() {
       } else if (firstClicked === false) { // first click guaranteed safe logic
         setFirstClicked(true);
         setSquareState('revealed-empty'); // use state to update rather than directly updating className
-        const minePositions = generateMines(xAxis, yAxis);
+        const minePositions = generateMines(xAxis, yAxis); // minePositions var is no longer needed - Mario
         console.log('boardMines', boardMines);
-        const adjacentMineNum = adjMineNum(xAxis, yAxis, minePositions);
-        setDispMineNum(adjacentMineNum);
+        // const adjacentMineNum = adjMineNum(xAxis, yAxis, minePositions);
+        setDispMineNum(adjMineNum(xAxis, yAxis));
       }
     } else if (event.type === 'contextmenu') { // right click logic
       event.preventDefault(); // prevents context menu from appearing for right click
@@ -107,11 +116,16 @@ function App() {
   function generateMines (xAxis, yAxis) {
     const initialStateArr = []; // create array to pass into setBoardMines
     initialStateArr[yAxis * 10 + xAxis] = 'no mines here';
+
+    // adjMineNum(xAxis, yAxis, initialStateArr); // this is doing nothing so I commented it out - Mario
     let totalMines = 16; // total number of mines to be on the grid
+
+    const listOfAdjPositions = adjSquarePositions(xAxis, yAxis); // {86, 87, 85, 77} (example set)
+    // by this point we need the positions of all adjacent squares
 
     while (totalMines > 0) {
       const randomSquareNum = Math.floor(Math.random() * 100);
-      if (initialStateArr[randomSquareNum] === undefined) {
+      if (initialStateArr[randomSquareNum] === undefined && listOfAdjPositions.has(randomSquareNum) === false) {
         initialStateArr[randomSquareNum] = true;
         // console.log(`Mined square`, squaresStates[randomSquareNum]); // counts number of mines
         totalMines -= 1;
