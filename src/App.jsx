@@ -8,7 +8,7 @@ function App() {
   const [firstClicked, setFirstClicked] = useState(false);
 
   function adjSquarePositions(xCoor, yCoor) {
-    const listOfSquareIdsAsKeys = new Set(); // {86, 87, 85, 77}
+    const listOfSquareIdsAsKeys = new Set(); // {86, 87, 85, 77 etc.}
 
     for (let adjX = xCoor - 1; adjX <= xCoor + 1; adjX += 1) {
       for (let adjY = yCoor - 1; adjY <= yCoor + 1; adjY += 1) {
@@ -89,6 +89,23 @@ function App() {
     } // closes the handleClick function
   }
 
+  /*winCondition pseudo:
+    - check if squareState is 'revealed-empty'
+      -->if TRUE, increment clickedEmpty by 1
+    - check if clickedEmpty is strictly equal to 84
+      -->if TRUE, change gameOver state to TRUE
+  */
+  function winCondition (squareState) {
+    let clickedEmpty = 0;
+
+    if (squareState === 'revealed-empty') {
+      clickedEmpty += 1;
+    } else if (clickedEmpty === 84){
+
+    }
+
+  }
+
   function handleRestart() {  // (PROBABLY) All stuff in this function runs BEFORE
     setGameOver(false);      // the useEffect in Square.jsx runs
     setRestart(true);
@@ -140,7 +157,6 @@ function App() {
   // console.log(squares[0]);
   // rearchitect to have mines as states inside each square component
 
-  
   return (
     <div>
       <p className='section-title'>Mine Sweeper</p>
@@ -157,6 +173,14 @@ function App() {
       <div className='board-right'>
         <p id='endGameMessage'>{
           gameOver === true ? 'Game Over!' : ''
+
+          /*
+            -If gameOver state is TRUE:
+              --> Was the last clicked squareState 'revealed-empty' ?
+                --> Yes, display 'You win!'
+                --> No, display 'You lose!'
+          */
+         
         }</p>
       </div>
     </div>
@@ -205,4 +229,13 @@ const testData = [
 */
 
 // maybe put mineState in the state of this component?
-// we were working on guaranteeing first move is safe 4-6-22
+// first move is safe and always 0 surrounding mines 4-22-22
+
+// win condition
+
+/*
+
+counting revealed-empty squares
+
+
+*/
