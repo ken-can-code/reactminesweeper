@@ -6,6 +6,7 @@ function App() {
   const [restart, setRestart] = useState(false);
   const [boardMines, setBoardMines] = useState([]); // set to true or undefined currently
   const [firstClicked, setFirstClicked] = useState(false);
+  const [leftClickCount, setLeftClickCount] = useState(1);
 
   function adjSquarePositions(xCoor, yCoor) {
     const listOfSquareIdsAsKeys = new Set(); // {86, 87, 85, 77 etc.}
@@ -44,6 +45,7 @@ function App() {
     if (event.type === 'click' && squareContents.innerHTML === '') { // left click logic
       console.log('reached here');
       if (boardMines[yAxis * 10 + xAxis] === undefined && firstClicked === true) { // non mine square logic
+        setLeftClickCount(leftClickCount + 1);
         console.log('x and y axis, in order', xAxis, yAxis);
         setDispMineNum(adjMineNum(xAxis, yAxis, boardMines)); // puts the adjacent mine num into state, which displays in square
         console.log('in mineState false');
@@ -88,29 +90,25 @@ function App() {
       }
     } // closes the handleClick function
   }
-
   /*winCondition pseudo:
     - check if squareState is 'revealed-empty'
       -->if TRUE, increment clickedEmpty by 1
     - check if clickedEmpty is strictly equal to 84
       -->if TRUE, change gameOver state to TRUE
   */
-  function winCondition (squareState) {
-    let clickedEmpty = 0;
 
-    if (squareState === 'revealed-empty') {
-      clickedEmpty += 1;
-    } else if (clickedEmpty === 84){
-
+  useEffect(() =>{ // useEffect happens AFTER states update
+    if (leftClickCount === 84) {
+      setGameOver(true);
     }
-
-  }
+  }, [leftClickCount])
 
   function handleRestart() {  // (PROBABLY) All stuff in this function runs BEFORE
     setGameOver(false);      // the useEffect in Square.jsx runs
     setRestart(true);
     setFirstClicked(false);
     setBoardMines([]);
+    setLeftClickCount(1);
   }
 
   const squares = [];
@@ -172,15 +170,11 @@ function App() {
       </div>
       <div className='board-right'>
         <p id='endGameMessage'>{
-          gameOver === true ? 'Game Over!' : ''
-
-          /*
-            -If gameOver state is TRUE:
-              --> Was the last clicked squareState 'revealed-empty' ?
-                --> Yes, display 'You win!'
-                --> No, display 'You lose!'
-          */
-         
+          leftClickCount >= 84
+          ? 'You win!' // if true
+          : gameOver === true // if false, check if gameOver is true
+          ? 'You lose!' // if the leftClickCount is under 84, BUT the game IS over
+          : '' // if false
         }</p>
       </div>
     </div>
